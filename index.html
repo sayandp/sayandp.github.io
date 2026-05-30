@@ -1,538 +1,856 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sayand P — Data Scientist</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sayand P — Data Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f1ea;--bg-2:#eceae2;
+  --ink:#16140f;--gray:#7a756a;--gray-d:#a39e90;
+  --glass:rgba(255,255,255,.45);--glass-2:rgba(255,255,255,.62);--glass-bd:rgba(22,20,15,.10);
+  --c1:#c0673f;--c2:#d98a5e;--c3:#9aa05f;--c4:#d99a4e;--c5:#b5704a;
+  --disp:'Bricolage Grotesque',sans-serif;--sans:'Inter',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);--snap:300ms;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-    :root {
-      --navy: #1A3A5C;
-      --blue: #2563EB;
-      --blue-light: #EFF6FF;
-      --blue-mid: #BFDBFE;
-      --text: #1E293B;
-      --text-muted: #64748B;
-      --border: #E2E8F0;
-      --bg: #F8FAFC;
-      --white: #FFFFFF;
-      --green: #059669;
-      --green-light: #ECFDF5;
-    }
+/* dopamine aurora background */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.32;mix-blend-mode:multiply}
+.aurora .a1{width:46vw;height:46vw;background:radial-gradient(circle,var(--c1),transparent 70%);top:-10%;left:-5%;animation:drift1 18s ease-in-out infinite}
+.aurora .a2{width:40vw;height:40vw;background:radial-gradient(circle,var(--c2),transparent 70%);top:30%;right:-8%;animation:drift2 22s ease-in-out infinite}
+.aurora .a3{width:38vw;height:38vw;background:radial-gradient(circle,var(--c3),transparent 70%);bottom:-10%;left:25%;animation:drift3 20s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8vw,6vh) scale(1.15)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6vw,8vh) scale(1.1)}}
+@keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5vw,-7vh) scale(1.2)}}
+.grain{position:fixed;inset:-50%;z-index:91;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");animation:gn 1.1s steps(3) infinite}
+@keyframes gn{0%{transform:translate(0,0)}33%{transform:translate(-3%,2%)}66%{transform:translate(2%,-3%)}}
 
-    html { scroll-behavior: smooth; }
+/* custom cursor spotlight */
+@media(hover:hover){
+  body.cur *{cursor:none}
+  #spot{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;transition:opacity .4s;
+    background:radial-gradient(220px circle at var(--mx,-300px) var(--my,-300px),rgba(192,103,63,.08),transparent 60%)}
+  body.cur #spot{opacity:1}
+  .cur-dot,.cur-ring{position:fixed;top:0;left:0;z-index:300;pointer-events:none;border-radius:50%;opacity:0;transition:opacity .3s}
+  body.cur .cur-dot,body.cur .cur-ring{opacity:1}
+  .cur-dot{width:6px;height:6px;background:var(--c1);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--c1)}
+  .cur-ring{width:34px;height:34px;border:1px solid rgba(22,20,15,.4);transform:translate(-50%,-50%);
+    transition:width var(--snap),height var(--snap),background var(--snap),opacity .3s}
+  .cur-ring.hot{width:64px;height:64px;background:rgba(192,103,63,.14);border-color:transparent}
+}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-    }
+/* reveal */
+.rv{opacity:0;transform:translateY(24px);filter:blur(6px);transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease)}
+.rv.in{opacity:1;transform:none;filter:none}
+.stagger>*{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.stagger.in>*{opacity:1;transform:none}
+.stagger.in>*:nth-child(1){transition-delay:.05s}.stagger.in>*:nth-child(2){transition-delay:.12s}
+.stagger.in>*:nth-child(3){transition-delay:.19s}.stagger.in>*:nth-child(4){transition-delay:.26s}
+.stagger.in>*:nth-child(5){transition-delay:.33s}.stagger.in>*:nth-child(6){transition-delay:.40s}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px;
-    }
-    .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--navy); letter-spacing: -0.5px; }
-    .nav-logo span { color: var(--blue); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--blue); }
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+section{padding:clamp(4.5rem,9vw,8rem) 0;position:relative}
+.eyebrow{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gray);margin-bottom:1.1rem;display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:18px;height:1px;background:linear-gradient(90deg,var(--c1),var(--c3))}
+.h2{font-family:var(--disp);font-size:clamp(2rem,5vw,3.5rem);font-weight:600;line-height:1.02;letter-spacing:-.02em}
+.lead{color:var(--gray);max-width:560px;margin-top:1rem}
 
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 5rem 2rem 3rem;
-      background: linear-gradient(135deg, #f0f7ff 0%, #fafcff 60%, #f0fdf4 100%);
-      text-align: center;
-    }
-    .hero-inner { max-width: 700px; }
-    .hero-badge {
-      display: inline-block;
-      background: var(--blue-light);
-      color: var(--blue);
-      font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 6px 16px; border-radius: 100px;
-      margin-bottom: 1.5rem;
-      border: 1px solid var(--blue-mid);
-    }
-    .hero-name {
-      font-size: clamp(2.4rem, 6vw, 3.8rem);
-      font-weight: 700; color: var(--navy);
-      letter-spacing: -1.5px; line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-    .hero-name span { color: var(--blue); }
-    .hero-tagline {
-      font-size: 1.1rem; color: var(--text-muted);
-      max-width: 520px; margin: 0 auto 2rem;
-    }
-    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--blue); color: #fff;
-      padding: 12px 28px; border-radius: 8px;
-      text-decoration: none; font-weight: 600; font-size: 0.9rem;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
-    .btn-outline {
-      background: transparent; color: var(--navy);
-      padding: 12px 28px; border-radius: 8px;
-      text-decoration: none; font-weight: 600; font-size: 0.9rem;
-      border: 1.5px solid var(--border);
-      transition: border-color 0.2s, transform 0.1s;
-    }
-    .btn-outline:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
-    .hero-links { margin-top: 2rem; display: flex; gap: 1.5rem; justify-content: center; }
-    .hero-links a {
-      color: var(--text-muted); font-size: 0.85rem;
-      text-decoration: none; display: flex; align-items: center; gap: 6px;
-      transition: color 0.2s;
-    }
-    .hero-links a:hover { color: var(--blue); }
+/* glass primitive */
+.glass{background:var(--glass);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);
+  border:1px solid var(--glass-bd);border-radius:24px;position:relative;overflow:hidden}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.55),transparent 45%);opacity:.5}
 
-    /* ── SECTIONS ── */
-    section { padding: 5rem 2rem; }
-    .section-inner { max-width: 900px; margin: 0 auto; }
-    .section-label {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--blue);
-      margin-bottom: 0.5rem;
-    }
-    .section-title {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 700; color: var(--navy);
-      letter-spacing: -0.5px; margin-bottom: 1rem;
-    }
-    .section-sub { color: var(--text-muted); margin-bottom: 3rem; max-width: 560px; }
-    .divider { width: 48px; height: 3px; background: var(--blue); border-radius: 2px; margin-bottom: 3rem; }
+/* NAV */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:8px;
+  background:var(--glass-2);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--glass-bd);border-radius:100px;padding:7px 8px 7px 16px;box-shadow:0 8px 28px rgba(0,0,0,.08);
+  min-width:min(720px,calc(100vw - 32px))}
+nav .brand{font-family:var(--disp);font-weight:700;font-size:1.05rem;white-space:nowrap}
+nav .links{display:flex;gap:2px;margin:0 auto}
+nav a{text-decoration:none;color:var(--gray);font-size:.82rem;font-weight:500;padding:8px 14px;border-radius:100px;transition:var(--snap)}
+nav a:hover{background:var(--glass-2);color:var(--ink)}
+nav .cta{background:linear-gradient(90deg,var(--c1),var(--c2));color:#fff;padding:8px 18px;flex:none}
+nav .cta:hover{color:#fff;filter:brightness(1.05)}
+nav .nav-soc{display:flex;gap:2px;flex:none}
+nav .nav-soc a{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border-radius:50%;color:var(--gray);transition:transform var(--snap) var(--ease),background var(--snap),color var(--snap)}
+nav .nav-soc a svg{width:16px;height:16px}
+nav .nav-soc a:hover{background:var(--glass-2);color:var(--c1);transform:translateY(-2px)}
+@media(max-width:880px){nav .nav-soc a{width:30px;height:30px}nav .nav-soc a svg{width:15px;height:15px}}
+@media(max-width:480px){nav{padding:6px 6px 6px 12px;gap:3px}nav .brand{font-size:.98rem}nav .brand .logo-mark{width:24px;height:24px}nav .nav-soc{gap:0}nav .nav-soc a{width:26px;height:26px}nav .cta{padding:7px 14px}}
+@media(max-width:420px){nav .nav-soc{display:none}}
+@media(max-width:760px){nav{min-width:0;width:calc(100vw - 28px);gap:6px}nav .links{display:none}nav .brand{margin-right:auto}}
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 24px 4rem;position:relative}
+.hero-kicker{display:inline-flex;align-items:center;gap:9px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gray);text-align:center;line-height:1.45;
+  padding:8px 16px;border-radius:100px;margin-bottom:2rem;opacity:0;animation:fdn 1s var(--ease) .2s forwards}
+.hero-kicker .live{width:7px;height:7px;flex:none;border-radius:50%;background:var(--c3);box-shadow:0 0 0 4px rgba(154,160,95,.25)}
+@keyframes fdn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.hero-name{font-family:var(--disp);font-size:clamp(3rem,13vw,11rem);font-weight:300;line-height:.88;letter-spacing:-.04em}
+.hero-name .ln{display:block;overflow:hidden}
+.hero-name .ln>i{display:inline-block;font-style:normal;transform:translateY(110%);opacity:0;transition:transform 1s var(--ease),opacity 1s ease;font-variation-settings:'wght' 300}
+.hero-name.go .ln>i{transform:none;opacity:1}
+.hero-name.go .ln:nth-child(2)>i{transition-delay:.1s}
+.hero-name em{font-style:italic;font-weight:700;
+  background:linear-gradient(110deg,var(--c1),var(--c2) 35%,var(--c4) 70%,var(--c3));background-size:240% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes flow{to{background-position:240% 0}}
+.hero-role{font-size:.78rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gray);margin-top:1.6rem;opacity:0;animation:fdn 1s var(--ease) .9s forwards}
+.hero-tag{color:var(--gray);max-width:520px;margin:1.6rem auto 0;font-size:1.05rem}
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-top:2.2rem;flex-wrap:wrap}
 
-    /* ── ABOUT ── */
-    #about { background: var(--white); }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-    .about-text p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.97rem; }
-    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .stat-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.2rem;
-      text-align: center;
-    }
-    .stat-num { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1; }
-    .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+/* 3D logo cluster (CSS 3D) */
+.scene{perspective:900px;width:120px;height:120px;margin:0 auto 1.6rem}
+.cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:tumble 14s linear infinite}
+@keyframes tumble{from{transform:rotateX(-20deg) rotateY(0)}to{transform:rotateX(-20deg) rotateY(360deg)}}
+.cube .f{position:absolute;inset:0;border:1px solid var(--glass-bd);border-radius:18px;display:flex;align-items:center;justify-content:center;
+  background:var(--glass-2);backdrop-filter:blur(8px);box-shadow:inset 0 0 30px rgba(192,103,63,.18)}
+.cube .f svg{width:48px;height:48px;color:var(--c1)}
+.cube .fr{transform:translateZ(60px)}.cube .bk{transform:rotateY(180deg) translateZ(60px)}
+.cube .rt{transform:rotateY(90deg) translateZ(60px)}.cube .lf{transform:rotateY(-90deg) translateZ(60px)}
+.cube .tp{transform:rotateX(90deg) translateZ(60px)}.cube .bt{transform:rotateX(-90deg) translateZ(60px)}
 
-    /* ── SKILLS ── */
-    #skills { background: var(--bg); }
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
-    .skill-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.4rem;
-    }
-    .skill-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
-    .skill-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-    }
-    .skill-card-title { font-weight: 600; font-size: 0.9rem; color: var(--navy); }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag {
-      background: var(--blue-light); color: #1d4ed8;
-      font-size: 0.75rem; font-weight: 500;
-      padding: 3px 10px; border-radius: 100px;
-    }
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:.82rem;font-weight:600;letter-spacing:.02em;
+  padding:14px 26px;border-radius:100px;cursor:pointer;transition:var(--snap) var(--ease);border:1px solid transparent;font-family:var(--sans);will-change:transform}
+.btn-grad{background:linear-gradient(90deg,var(--c1),var(--c2));color:#fff;box-shadow:0 8px 24px rgba(192,103,63,.3)}
+.btn-grad:hover{box-shadow:0 12px 36px rgba(192,103,63,.45)}
+.btn-glass{background:var(--glass-2);backdrop-filter:blur(14px);border-color:var(--glass-bd);color:var(--ink)}
+.btn-glass:hover{background:var(--glass)}
 
-    /* ── PROJECTS ── */
-    #projects { background: var(--white); }
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .project-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 14px; padding: 1.6rem;
-      transition: box-shadow 0.2s, transform 0.2s;
-      display: flex; flex-direction: column;
-    }
-    .project-card:hover { box-shadow: 0 8px 32px rgba(37,99,235,0.1); transform: translateY(-3px); }
-    .project-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-    .project-icon {
-      width: 44px; height: 44px; border-radius: 10px;
-      background: var(--blue-light);
-      display: flex; align-items: center; justify-content: center; font-size: 22px;
-    }
-    .project-badge {
-      font-size: 0.7rem; font-weight: 600;
-      padding: 3px 10px; border-radius: 100px;
-      background: var(--green-light); color: var(--green);
-    }
-    .project-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.5rem; }
-    .project-desc { color: var(--text-muted); font-size: 0.875rem; flex: 1; }
-    .project-footer { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-    .project-stack { display: flex; flex-wrap: wrap; gap: 5px; }
-    .stack-tag {
-      background: #F1F5F9; color: var(--text-muted);
-      font-size: 0.72rem; font-weight: 500;
-      padding: 2px 9px; border-radius: 100px;
-    }
+/* CV dropdown */
+.cv-wrap{position:relative;display:inline-block}
+.cv-menu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(8px) scale(.96);transform-origin:top center;
+  min-width:220px;background:var(--glass-2);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);
+  border:1px solid var(--glass-bd);border-radius:16px;padding:6px;box-shadow:0 16px 40px rgba(0,0,0,.16);
+  opacity:0;visibility:hidden;transition:opacity var(--snap) var(--ease),transform var(--snap) var(--ease),visibility var(--snap);z-index:120}
+.cv-wrap.open .cv-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0) scale(1)}
+.cv-menu a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;text-decoration:none;color:var(--ink);
+  font-size:.86rem;font-weight:500;transition:background var(--snap),transform var(--snap) var(--ease)}
+.cv-menu a:hover{background:var(--glass);transform:translateX(3px)}
+.cv-menu a svg{width:16px;height:16px;color:var(--c1);flex:none}
+.cv-menu a small{display:block;color:var(--gray);font-weight:400;font-size:.72rem;margin-top:1px}
+.cv-wrap .chev{transition:transform var(--snap) var(--ease)}
+.cv-wrap.open .chev{transform:rotate(180deg)}
+.cv-wrap.up .cv-menu{top:auto;bottom:calc(100% + 8px);transform-origin:bottom center;transform:translateX(-50%) translateY(-8px) scale(.96)}
+.cv-wrap.up.open .cv-menu{transform:translateX(-50%) translateY(0) scale(1)}
 
-    /* ── EDUCATION ── */
-    #education { background: var(--bg); }
-    .edu-list { display: flex; flex-direction: column; gap: 1.2rem; }
-    .edu-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem 1.8rem;
-      display: flex; gap: 1.4rem; align-items: flex-start;
-    }
-    .edu-icon {
-      width: 48px; height: 48px; border-radius: 10px;
-      background: var(--blue-light);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; flex-shrink: 0;
-    }
-    .edu-degree { font-weight: 700; color: var(--navy); margin-bottom: 2px; }
-    .edu-school { font-size: 0.9rem; color: var(--blue); font-weight: 500; }
-    .edu-meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
-    .edu-badge {
-      display: inline-block; margin-top: 8px;
-      background: var(--green-light); color: var(--green);
-      font-size: 0.75rem; font-weight: 600;
-      padding: 3px 12px; border-radius: 100px;
-    }
+/* FOCUS glass cards */
+.focus-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:2.6rem}
+.fcard{padding:2rem;transition:transform var(--snap) var(--ease),box-shadow var(--snap)}
+.fcard:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(0,0,0,.10)}
+.fcard .ic{width:54px;height:54px;flex:none;border-radius:16px;background:linear-gradient(135deg,rgba(192,103,63,.22),rgba(154,160,95,.18));
+  border:1px solid var(--glass-bd);display:flex;align-items:center;justify-content:center;color:var(--ink);margin-bottom:1.2rem;transition:var(--snap) var(--ease)}
+.fcard:hover .ic{transform:rotate(-8deg) scale(1.1)}
+.fcard .ic svg{width:26px;height:26px}
+.fcard h3{font-family:var(--disp);font-size:1.2rem;font-weight:600;margin-bottom:.4rem}
+.fcard p{color:var(--gray);font-size:.9rem}
+@media(max-width:760px){.focus-row{grid-template-columns:1fr}}
 
-    /* ── CONTACT ── */
-    #contact {
-      background: var(--navy);
-      text-align: center; color: #fff;
-    }
-    #contact .section-label { color: #93C5FD; }
-    #contact .section-title { color: #fff; }
-    #contact .section-sub { color: #94A3B8; }
-    .contact-links { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
-    .contact-btn {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.1);
-      color: #fff; text-decoration: none;
-      padding: 12px 22px; border-radius: 8px; font-size: 0.875rem; font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.2);
-      transition: background 0.2s;
-    }
-    .contact-btn:hover { background: rgba(255,255,255,0.2); }
+/* BENTO */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:170px;gap:16px;margin-top:2.6rem}
+.bcell{padding:1.6rem;transition:transform var(--snap) var(--ease),box-shadow var(--snap);display:flex;flex-direction:column;justify-content:space-between}
+.bcell:hover{transform:translateY(-5px);box-shadow:0 22px 46px rgba(0,0,0,.10)}
+.bcell.lg{grid-column:span 2;grid-row:span 2}
+.bcell.wide{grid-column:span 2}
+.bcell .bn{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gray-d)}
+.bcell h3{font-family:var(--disp);font-weight:600;font-size:1.15rem;margin-top:auto}
+.bcell.lg h3{font-size:1.8rem}
+.bcell p{color:var(--gray);font-size:.86rem;margin-top:.4rem}
+.bcell .ic{width:42px;height:42px;flex:none;border-radius:12px;background:var(--glass-2);border:1px solid var(--glass-bd);display:flex;align-items:center;justify-content:center;color:var(--c1)}
+.bcell .ic svg{width:22px;height:22px}
+.bcell .spark{font-family:var(--disp);font-size:2.6rem;background:linear-gradient(120deg,var(--c1),var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent}
+@media(max-width:760px){.bento{grid-template-columns:1fr 1fr;grid-auto-rows:150px}.bcell.lg{grid-column:span 2}}
 
-    /* ── FOOTER ── */
-    footer {
-      background: #0F2340; color: #64748B;
-      text-align: center; padding: 1.5rem;
-      font-size: 0.8rem;
-    }
+/* WORK */
+.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:2.6rem}
+.work{padding:0;overflow:hidden;transition:transform var(--snap) var(--ease),box-shadow var(--snap);text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.work:hover{transform:translateY(-6px);box-shadow:0 26px 54px rgba(0,0,0,.12)}
+.work .viz{aspect-ratio:16/9;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(130% 130% at 70% 0%,rgba(217,154,78,.18),rgba(236,234,226,.6))}
+.work .viz svg{transition:transform .5s var(--ease)}
+.work:hover .viz svg{transform:scale(1.06)}
+.work .flag{position:absolute;top:14px;left:14px;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--glass-2);backdrop-filter:blur(8px);border:1px solid var(--glass-bd);border-radius:100px;padding:4px 11px;color:var(--ink)}
+.work .flag.feat{background:linear-gradient(90deg,var(--c1),var(--c2));border:none;color:#fff}
+.work .info{padding:1.6rem 1.8rem 1.8rem}
+.work h3{font-family:var(--disp);font-size:1.35rem;font-weight:600;margin-bottom:.5rem}
+.work p{color:var(--gray);font-size:.88rem}
+.work .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
+.work .tg{font-size:.7rem;color:var(--gray);background:var(--glass);border:1px solid var(--glass-bd);border-radius:100px;padding:3px 10px}
+.work .wlinks{display:flex;gap:8px;margin-top:1.2rem;flex-wrap:wrap}
+.work .wlink{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:600;text-decoration:none;
+  padding:8px 14px;border-radius:100px;transition:transform var(--snap) var(--ease),background var(--snap),box-shadow var(--snap),color var(--snap)}
+.work .wlink svg{width:13px;height:13px}
+.work .wlink.live{background:linear-gradient(90deg,var(--c1),var(--c2));color:#fff}
+.work .wlink.live:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(192,103,63,.35)}
+.work .wlink.code{background:var(--glass);border:1px solid var(--glass-bd);color:var(--ink)}
+.work .wlink.code:hover{transform:translateY(-2px);background:var(--glass-2)}
+.work .wlink.soon{background:var(--glass);border:1px solid var(--glass-bd);color:var(--gray);cursor:default}
+@media(max-width:760px){.work-grid{grid-template-columns:1fr}}
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-    }
-  </style>
+/* richer chart visuals — draw/pop on reveal */
+.work .viz .gridline{stroke:rgba(22,20,15,.12);stroke-width:.6}
+.work .viz .b{transform-origin:bottom;transform:scaleY(0);transition:transform .9s var(--ease)}
+.work.in .viz .b{transform:scaleY(1)}
+.work .viz .bx{transform-origin:left;transform:scaleX(0);transition:transform .9s var(--ease)}
+.work.in .viz .bx{transform:scaleX(1)}
+.work .viz .ln{stroke-dasharray:400;stroke-dashoffset:400;transition:stroke-dashoffset 1.5s ease .2s}
+.work.in .viz .ln{stroke-dashoffset:0}
+.work .viz .pop{opacity:0;transform:scale(0);transform-origin:center;transition:opacity .5s,transform .5s}
+.work.in .viz .pop{opacity:1;transform:scale(1)}
+.work .viz .lbl{fill:var(--gray);font-family:var(--sans);font-size:8px}
+
+/* MARQUEE */
+.marq{overflow:hidden;padding:1.4rem 0;border-top:1px solid var(--glass-bd);border-bottom:1px solid var(--glass-bd);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marq .tk{display:inline-flex;gap:2.4rem;white-space:nowrap;animation:mx 28s linear infinite;font-family:var(--disp);font-size:1.5rem;font-weight:500}
+.marq .tk span{display:inline-flex;align-items:center;gap:2.4rem;color:var(--gray)}
+.marq .tk span::after{content:"✦";color:var(--c1)}
+.marq:hover .tk{animation-play-state:paused}
+@keyframes mx{to{transform:translateX(-50%)}}
+
+/* TIMELINE */
+.tl{margin-top:2.6rem;border-left:1px solid var(--glass-bd);margin-left:8px;padding-left:2rem}
+.tl-item{position:relative;padding-bottom:2.2rem}
+.tl-item::before{content:"";position:absolute;left:calc(-2rem - 5px);top:7px;width:9px;height:9px;border-radius:50%;
+  background:linear-gradient(135deg,var(--c1),var(--c3));box-shadow:0 0 0 4px var(--bg),0 0 10px rgba(192,103,63,.5)}
+.tl-item .yr{font-family:var(--disp);font-size:1.2rem}
+.tl-item .org{color:var(--c3);font-size:.88rem;margin:.2rem 0 .5rem}
+.tl-item p{color:var(--gray);font-size:.92rem;max-width:520px}
+
+/* SKILL BARS */
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 3rem;margin-top:2.6rem}
+.bar-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem}
+.bar-head .nm{font-size:.9rem;font-weight:500}
+.bar-head .lv{font-family:var(--disp);color:var(--gray);font-size:.85rem}
+.bar-track{height:6px;border-radius:100px;background:var(--glass);border:1px solid var(--glass-bd);overflow:hidden;position:relative}
+.bar-fill{position:absolute;inset:0;width:0;border-radius:100px;background:linear-gradient(90deg,var(--c1),var(--c3));transition:width 1.2s var(--ease)}
+@media(max-width:640px){.bars{grid-template-columns:1fr;gap:1.1rem}}
+
+/* CONTACT */
+.contact-card{padding:clamp(2.6rem,7vw,5rem);text-align:center}
+.contact-card h2{font-family:var(--disp);font-size:clamp(2.2rem,6vw,4rem);font-weight:600;line-height:1.02}
+.contact-card p{color:var(--gray);max-width:440px;margin:1.2rem auto 2.2rem}
+.socials{display:flex;gap:12px;justify-content:center;margin-top:2rem}
+.soc{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--glass-bd);color:var(--ink);text-decoration:none;
+  transition:transform var(--snap) var(--ease),background var(--snap),color var(--snap),box-shadow var(--snap)}
+.soc svg{width:20px;height:20px}
+.soc:hover{transform:translateY(-4px) scale(1.06);background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 12px 28px rgba(192,103,63,.35)}
+
+/* FOOTER */
+footer{padding:3rem 0 2.4rem;border-top:1px solid var(--glass-bd);margin-top:2rem}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;color:var(--gray-d);font-size:.82rem}
+.foot a{color:var(--gray);text-decoration:none;transition:var(--snap)}
+.foot a:hover{color:var(--ink)}
+.foot .links{display:flex;gap:18px}
+
+#prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3))}
+/* ── DATA-NETWORK LOGO ── */
+.logo-mark{width:30px;height:30px;display:inline-flex}
+.logo-mark svg{width:100%;height:100%;overflow:visible}
+.logo-mark .lk{stroke:var(--c1);stroke-width:1;opacity:.35;stroke-dasharray:40;stroke-dashoffset:40;
+  animation:lkDraw 2.2s var(--ease) forwards}
+.logo-mark .lk:nth-child(2){animation-delay:.1s}.logo-mark .lk:nth-child(3){animation-delay:.2s}
+.logo-mark .lk:nth-child(4){animation-delay:.3s}.logo-mark .lk:nth-child(5){animation-delay:.4s}
+.logo-mark .lk:nth-child(6){animation-delay:.5s}.logo-mark .lk:nth-child(7){animation-delay:.6s}
+@keyframes lkDraw{to{stroke-dashoffset:0}}
+.logo-mark .nd{fill:var(--c1);animation:ndPulse 2.4s ease-in-out infinite}
+.logo-mark .n2{fill:var(--c4);animation-delay:.3s}.logo-mark .n3{fill:var(--c3);animation-delay:.6s}
+.logo-mark .n4{fill:var(--c2);animation-delay:.9s}.logo-mark .n5{fill:var(--c1);animation-delay:1.2s}
+@keyframes ndPulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.35);opacity:1}}
+.brand:hover .logo-mark .nd{animation-duration:.8s}
+.brand:hover .logo-mark{transform:rotate(180deg);transition:transform .8s var(--ease)}
+.logo-mark{transition:transform .8s var(--ease)}
+
+/* ════ 25 EXTRA ANIMATION / TRANSITION EFFECTS ════ */
+/* 1 — gradient text shimmer on section titles */
+.h2{background:linear-gradient(100deg,var(--ink) 40%,var(--c1) 55%,var(--ink) 70%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;background-position:200% 0;transition:background-position 1.2s var(--ease)}
+.h2.in{background-position:0 0}
+/* 2 — eyebrow line grow */
+.eyebrow::before{transition:width .6s var(--ease)}.eyebrow{overflow:hidden}
+.rv .eyebrow::before,.eyebrow.rv::before{width:0}.in .eyebrow::before,.eyebrow.in::before{width:18px}
+/* 3 — focus card icon orbit ring on hover */
+.fcard .ic{position:relative}
+.fcard .ic::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px dashed var(--c1);opacity:0;transition:opacity .3s}
+.fcard:hover .ic::after{opacity:.5;animation:spin360 3s linear infinite}
+@keyframes spin360{to{transform:rotate(360deg)}}
+/* 4 — bento cells get a sweeping sheen */
+.bcell::after,.fcard::after,.work::after{content:"";position:absolute;top:0;left:-130%;width:60%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-18deg);transition:left .8s var(--ease);pointer-events:none;z-index:3}
+.bcell:hover::after,.fcard:hover::after,.work:hover::after{left:150%}
+/* 5 — pill/tag pop on hover */
+.tg{transition:transform var(--snap) var(--ease),background var(--snap),color var(--snap)}
+.tg:hover{transform:translateY(-3px) scale(1.06);background:var(--c1);color:#fff;border-color:var(--c1)}
+/* 6 — marquee items lift on hover */
+.marq .tk span{transition:color var(--snap),transform var(--snap)}
+.marq .tk span:hover{color:var(--c1);transform:translateY(-3px)}
+/* 7 — nav link underline wipe */
+nav a{position:relative}
+nav a::after{content:"";position:absolute;left:14px;right:14px;bottom:5px;height:1px;background:var(--c1);transform:scaleX(0);transform-origin:left;transition:transform var(--snap) var(--ease)}
+nav a:hover::after{transform:scaleX(1)}
+/* 8 — to-top arrow bob */
+.to-top svg{transition:transform var(--snap) var(--ease)}
+.to-top:hover svg{transform:translateY(-3px)}
+/* 9 — hero kicker breathing border */
+.hero-kicker{animation:fdn 1s var(--ease) .2s forwards,kbGlow 4s ease-in-out infinite 1.2s}
+@keyframes kbGlow{0%,100%{box-shadow:0 0 0 rgba(192,103,63,0)}50%{box-shadow:0 0 24px rgba(192,103,63,.25)}}
+/* 10 — soft float on focus cards (idle) */
+/* 10 — focus cards lift smoothly (no idle float; tilt handles motion) */
+.fcard{transition:transform var(--snap) var(--ease),box-shadow var(--snap),border-color var(--snap)}
+/* 11 — timeline dot ripple */
+.tl-item::after{content:"";position:absolute;left:calc(-2rem - 5px);top:7px;width:9px;height:9px;border-radius:50%;border:1px solid var(--c1);opacity:0}
+.tl-item.in::after{animation:ripple 1.6s ease-out .3s}
+@keyframes ripple{0%{transform:scale(1);opacity:.7}100%{transform:scale(4);opacity:0}}
+/* 12 — work title slide underline */
+.work h3{position:relative;display:inline-block}
+.work h3::after{content:"";position:absolute;left:0;bottom:-3px;height:2px;width:0;background:linear-gradient(90deg,var(--c1),var(--c3));transition:width .4s var(--ease)}
+.work:hover h3::after{width:100%}
+/* 13 — button arrow shoot */
+.btn svg{transition:transform var(--snap) var(--ease)}
+.btn:hover svg{transform:translate(4px,-4px)}
+/* 14 — glass cards: animated gradient border glow on hover */
+.glass{transition:box-shadow var(--snap),transform var(--snap) var(--ease),border-color var(--snap)}
+.fcard:hover,.work:hover,.bcell:hover{border-color:transparent;box-shadow:0 0 0 1px var(--c1),0 22px 50px rgba(0,0,0,.10)}
+/* 15 — skill bar fill gets a moving stripe */
+.bar-fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 8px,rgba(255,255,255,.25) 8px 16px);
+  background-size:200% 100%;animation:stripe 1.4s linear infinite;opacity:0;transition:opacity .4s}
+.bars.in .bar-fill::after{opacity:1}
+@keyframes stripe{to{background-position:200% 0}}
+/* 16 — hero name letters get subtle hover wobble */
+.hero-name em:hover{animation:wobble .5s var(--ease)}
+@keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+/* 17 — aurora blob extra slow rotation layer */
+.aurora .a1{animation:drift1 18s ease-in-out infinite,hue 24s linear infinite}
+@keyframes hue{to{filter:blur(90px) hue-rotate(20deg)}}
+/* 18 — section eyebrow text fade-slide */
+.eyebrow{transition:opacity .6s var(--ease),letter-spacing .6s var(--ease)}
+.rv.eyebrow{opacity:0;letter-spacing:.5em}.in.eyebrow{opacity:1}
+/* 19 — focus card number counter glow already; add icon color shift */
+.fcard:hover .ic{color:var(--c1)}
+/* 20 — contact card pulse ring */
+.contact-card{position:relative}
+.contact-card::before{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--c1);opacity:0;pointer-events:none}
+.contact-card.in::before{animation:cardPulse 3s ease-out infinite}
+@keyframes cardPulse{0%{opacity:.4;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
+/* 21 — bento spark symbol spin */
+.bcell .spark{transition:transform .6s var(--ease)}
+.bcell:hover .spark{transform:rotate(180deg) scale(1.1)}
+/* 22 — image-free viz bars rise (stagger via delay) */
+/* 22 — work card tags slide up on hover */
+.work .tg{transition:transform var(--snap) var(--ease),background var(--snap),color var(--snap),border-color var(--snap)}
+.work:hover .tg{transform:translateY(-2px)}
+.work:hover .tg:nth-child(1){transition-delay:0s}.work:hover .tg:nth-child(2){transition-delay:.04s}
+.work:hover .tg:nth-child(3){transition-delay:.08s}.work:hover .tg:nth-child(4){transition-delay:.12s}
+/* 23 — magnetic social/footer link slide */
+.foot a{position:relative;transition:transform var(--snap) var(--ease),color var(--snap)}
+.foot a:hover{transform:translateX(4px)}
+/* 24 — scroll-reveal scale variant */
+.rv.pop{transform:translateY(24px) scale(.94)}.rv.pop.in{transform:none}
+/* 25 — cursor ring color morph over interactive (handled w/ class) */
+.cur-ring.warm{border-color:var(--c1)}
+/* 25b — respect reduced motion */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
+/* 25 — whole-page gentle fade-in on load */
+body{animation:pageIn .8s var(--ease)}
+@keyframes pageIn{from{opacity:0}to{opacity:1}}
+
+/* ════════ 50 NEW ANIMATION / TRANSITION EFFECTS ════════ */
+/* 26 nav social icon idle bob on hover handled; add brand name letter-spacing on hover */
+nav .brand>span:last-child{transition:letter-spacing var(--snap) var(--ease)}
+nav .brand:hover>span:last-child{letter-spacing:.04em}
+/* 27 nav bar subtle entrance */
+nav{animation:navDrop .7s var(--ease) both}
+@keyframes navDrop{from{opacity:0;transform:translateX(-50%) translateY(-16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+/* 28 hero kicker shimmer sweep */
+.hero-kicker{position:relative;overflow:hidden}
+.hero-kicker::after{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);animation:kickSheen 5s ease-in-out infinite}
+@keyframes kickSheen{0%,70%{left:-130%}85%,100%{left:150%}}
+/* 29 hero tag fade-rise */
+.hero-tag{animation:fadeUp 1s var(--ease) 1.1s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* 30 hero CTA buttons stagger in */
+.hero-cta .btn{animation:fadeUp .9s var(--ease) both}
+.hero-cta .btn:nth-child(1){animation-delay:1.25s}.hero-cta .btn:nth-child(2){animation-delay:1.38s}
+/* 31 eyebrow dot pulse */
+.eyebrow::before{animation:ebPulse 2.6s ease-in-out infinite}
+@keyframes ebPulse{0%,100%{opacity:.5}50%{opacity:1}}
+/* 32 section h2 letter rise via clip already; add gradient drift */
+.h2{transition:background-position 1.2s var(--ease),letter-spacing .5s var(--ease)}
+.h2:hover{letter-spacing:.005em}
+/* 33 focus card heading underline grow */
+.fcard h3{position:relative;display:inline-block}
+.fcard h3::after{content:"";position:absolute;left:0;bottom:-3px;height:2px;width:0;background:linear-gradient(90deg,var(--c1),var(--c3));transition:width .4s var(--ease)}
+.fcard:hover h3::after{width:100%}
+/* 34 focus card paragraph subtle reveal on hover */
+.fcard p{transition:color var(--snap)}
+.fcard:hover p{color:var(--ink-2,#403c33)}
+/* 35 bento icon wiggle on hover */
+.bcell:hover .ic{animation:wiggle .5s var(--ease)}
+@keyframes wiggle{0%,100%{transform:rotate(0)}30%{transform:rotate(-7deg)}60%{transform:rotate(5deg)}}
+/* 36 bento heading slide */
+.bcell h3{transition:transform var(--snap) var(--ease),color var(--snap)}
+.bcell:hover h3{transform:translateX(4px);color:var(--c1)}
+/* 37 bento bn label fade */
+.bcell .bn{transition:color var(--snap),letter-spacing var(--snap)}
+.bcell:hover .bn{color:var(--c1);letter-spacing:.2em}
+/* 38 marquee gradient text shift */
+.marq .tk span:hover{background:linear-gradient(90deg,var(--c1),var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* 39 work card image zoom already; add caption lbl fade */
+.work .viz .lbl{transition:opacity .4s}
+.work:hover .viz .lbl{opacity:.4}
+/* 40 work flag pulse */
+.work .flag.feat{animation:flagPulse 3s ease-in-out infinite}
+@keyframes flagPulse{0%,100%{box-shadow:0 0 0 0 rgba(192,103,63,.4)}50%{box-shadow:0 0 0 6px rgba(192,103,63,0)}}
+/* 41 tag chip wave on card hover */
+.work:hover .tg{animation:tagHop .5s var(--ease)}
+@keyframes tagHop{0%{transform:translateY(0)}40%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+.work:hover .tg:nth-child(2){animation-delay:.06s}.work:hover .tg:nth-child(3){animation-delay:.12s}.work:hover .tg:nth-child(4){animation-delay:.18s}
+/* 42 timeline item slide on hover */
+.tl-item{transition:transform var(--snap) var(--ease)}
+.tl-item:hover{transform:translateX(6px)}
+/* 43 timeline org color glow */
+.tl-item .org{transition:text-shadow var(--snap)}
+.tl-item:hover .org{text-shadow:0 0 14px rgba(154,160,95,.5)}
+/* 44 skill bar head name shift */
+.bar-head .nm{transition:transform var(--snap) var(--ease)}
+.bars:hover .bar-head .nm{transform:translateX(2px)}
+/* 45 skill track glow on hover */
+.bar-track{transition:box-shadow var(--snap)}
+.bar-track:hover{box-shadow:0 0 14px rgba(192,103,63,.25)}
+/* 46 contact card heading shimmer */
+.contact-card h2{background:linear-gradient(100deg,var(--ink) 40%,var(--c1) 55%,var(--ink) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:ccShine 6s linear infinite}
+@keyframes ccShine{to{background-position:-220% 0}}
+/* 47 social icon ring spin on hover */
+.soc,.nav-soc a{position:relative}
+.soc::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:1px dashed var(--c1);opacity:0;transition:opacity .3s}
+.soc:hover::after{opacity:.5;animation:spin360 4s linear infinite}
+/* 48 footer link arrow */
+.foot a{position:relative;padding-right:0;transition:padding-right var(--snap),color var(--snap)}
+.foot a::after{content:"→";position:absolute;right:-14px;opacity:0;transition:opacity var(--snap),right var(--snap)}
+.foot a:hover{padding-right:16px;color:var(--ink)}
+.foot a:hover::after{opacity:1;right:-2px}
+/* 49 to-top rotate on hover */
+.to-top:hover svg{transform:rotate(360deg) translateY(-2px);transition:transform .6s var(--ease)}
+/* 50 progress bar glow */
+#prog{box-shadow:0 0 10px rgba(192,103,63,.6)}
+/* 51 cube faces glow pulse */
+.cube .f{animation:faceGlow 4s ease-in-out infinite}
+@keyframes faceGlow{0%,100%{box-shadow:inset 0 0 30px rgba(192,103,63,.18)}50%{box-shadow:inset 0 0 40px rgba(154,160,95,.28)}}
+/* 52 aurora a2 hue drift */
+.aurora .a2{animation:drift2 22s ease-in-out infinite,hue2 30s linear infinite}
+@keyframes hue2{to{filter:blur(90px) hue-rotate(-18deg)}}
+/* 53 logo node glow */
+.logo-mark .nd{filter:drop-shadow(0 0 2px rgba(192,103,63,.5))}
+/* 54 focus card icon gradient shift on hover */
+.fcard:hover .ic{background:linear-gradient(135deg,rgba(192,103,63,.4),rgba(217,154,78,.3))}
+/* 55 generic .rv variants: slide from left */
+.rv.left{transform:translateX(-30px)}.rv.left.in{transform:none}
+/* 56 slide from right */
+.rv.right{transform:translateX(30px)}.rv.right.in{transform:none}
+/* 57 zoom reveal */
+.rv.zoom{transform:scale(.9)}.rv.zoom.in{transform:none}
+/* 58 rotate reveal */
+.rv.rot{transform:rotate(-3deg) translateY(20px)}.rv.rot.in{transform:none}
+/* 59 work card lift shadow color */
+.work{transition:transform var(--snap) var(--ease),box-shadow var(--snap),border-color var(--snap)}
+/* 60 bento spark color pulse */
+.bcell .spark{animation:sparkHue 5s ease-in-out infinite}
+@keyframes sparkHue{0%,100%{filter:none}50%{filter:hue-rotate(15deg) brightness(1.1)}}
+/* 61 hero name em underline shimmer on hover */
+.hero-name em{background-size:240% 100%}
+/* 62 nav link active tap scale */
+nav a:active{transform:scale(.94)}
+/* 63 button press feedback */
+.btn:active{transform:scale(.96)!important}
+/* 64 card chip border glow on hover */
+.tg{transition:transform var(--snap) var(--ease),background var(--snap),color var(--snap),border-color var(--snap),box-shadow var(--snap)}
+.tg:hover{box-shadow:0 4px 12px rgba(192,103,63,.25)}
+/* 65 eyebrow text slight tracking on reveal */
+.eyebrow.in{animation:ebTrack .8s var(--ease)}
+@keyframes ebTrack{from{letter-spacing:.4em;opacity:.4}to{letter-spacing:.26em;opacity:1}}
+/* 66 section fade-edge on scroll (subtle) */
+section{transition:opacity .3s}
+/* 67 contact pulse ring already (#20); add CTA glow breathe */
+.contact-card .btn-grad{animation:ctaBreathe 4s ease-in-out infinite}
+@keyframes ctaBreathe{0%,100%{box-shadow:0 8px 24px rgba(192,103,63,.3)}50%{box-shadow:0 12px 34px rgba(192,103,63,.5)}}
+/* 68 work title gradient on hover */
+.work:hover h3{background:linear-gradient(90deg,var(--c1),var(--c5));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* 69 image-free viz gentle float */
+.work .viz svg{transition:transform .5s var(--ease)}
+/* 70 bento cell border shimmer */
+.bcell::before{transition:opacity var(--snap)}
+/* 71 nav-soc icon rotate on hover */
+nav .nav-soc a:hover svg{transform:rotate(8deg);transition:transform var(--snap) var(--ease)}
+/* 72 hero scene cube hover speed handled by tumble; add scene float */
+.scene{animation:sceneFloat 6s ease-in-out infinite}
+@keyframes sceneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+/* 73 focus row card entrance scale (works with stagger) */
+.focus-row.stagger>*{transition:opacity .6s var(--ease),transform .6s var(--ease)}
+/* 74 marquee speed up on hover removed-pause; keep pause + tint done */
+/* 75 to-top button glow ring */
+.to-top::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(192,103,63,.4);opacity:0;transition:opacity var(--snap)}
+.to-top:hover::after{opacity:1;animation:ripple 1.6s ease-out infinite}
+
+
+</style>
 </head>
 <body>
+<div id="prog"></div>
+<div class="aurora"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+<div class="grain"></div>
+<div id="spot"></div>
+<div class="cur-ring"></div><div class="cur-dot"></div>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">Sayand<span>.</span>P</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <a href="#hero" class="brand" id="brand" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)">
+    <span class="logo-mark">
+      <svg viewBox="0 0 36 36" fill="none">
+        <line class="lk" x1="8" y1="10" x2="18" y2="6"/><line class="lk" x1="18" y1="6" x2="28" y2="12"/>
+        <line class="lk" x1="8" y1="10" x2="12" y2="22"/><line class="lk" x1="12" y1="22" x2="24" y2="26"/>
+        <line class="lk" x1="28" y1="12" x2="24" y2="26"/><line class="lk" x1="18" y1="6" x2="12" y2="22"/>
+        <line class="lk" x1="28" y1="12" x2="12" y2="22"/><line class="lk" x1="8" y1="10" x2="24" y2="26"/>
+        <circle class="nd n1" cx="8" cy="10" r="2.6"/><circle class="nd n2" cx="18" cy="6" r="2.2"/>
+        <circle class="nd n3" cx="28" cy="12" r="2.6"/><circle class="nd n4" cx="12" cy="22" r="2.2"/>
+        <circle class="nd n5" cx="24" cy="26" r="3"/>
+      </svg>
+    </span>
+    <span>Sayand</span>
+  </a>
+  <div class="links">
+    <a href="#focus">Focus</a><a href="#do">Expertise</a><a href="#work">Work</a><a href="#about">About</a>
+  </div>
+  <div class="nav-soc">
+    <a href="https://github.com/sayandp" target="_blank" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg></a>
+    <a href="https://www.linkedin.com/in/sayand-p-2215a9225/" target="_blank" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+    <a href="mailto:sayandp0@gmail.com" aria-label="Email" title="sayandp0@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <a href="#contact" class="cta" style="text-decoration:none;border-radius:100px;font-size:.82rem;font-weight:600">Contact</a>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-inner">
-    <div class="hero-badge">Open to Remote Internships &amp; Jobs</div>
-    <h1 class="hero-name">Sayand P<br/><span>Data Scientist</span></h1>
-    <p class="hero-tagline">
-      Turning raw data into meaningful insights through machine learning, statistical analysis, and clean visualizations.
-    </p>
-    <div class="hero-cta">
-      <a href="#projects" class="btn-primary">View My Projects</a>
-      <a href="#contact" class="btn-outline">Get In Touch</a>
+  <div class="scene">
+    <div class="cube">
+      <div class="f fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 12h4l2 6 4-15 2 9h6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="f bk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+      <div class="f rt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 19h16M7 16V9M12 16V5M17 16v-4"/></svg></div>
+      <div class="f lf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+      <div class="f tp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <div class="f bt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 7h16v10H4zM8 21h8"/></svg></div>
     </div>
-    <div class="hero-links">
-      <a href="https://github.com/sayandp" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        GitHub
-      </a>
-      <a href="https://www.linkedin.com/in/sayand-p-2215a9225/" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        LinkedIn
-      </a>
-      <a href="mailto:sayandp0@gmail.com">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Email
-      </a>
+  </div>
+  <div class="hero-kicker glass"><span class="live"></span> Data Scientist · ML Engineer · Analyst</div>
+  <h1 class="hero-name" id="heroName"><span class="ln"><i>Data into</i></span><span class="ln"><i><em>decisions.</em></i></span></h1>
+  <div class="hero-role">Sayand P · Available for work · Kerala, India</div>
+  <p class="hero-tag">I turn messy, real-world data into deployed, decision-ready systems — modelling, explainability, APIs, and clean delivery, end to end.</p>
+  <div class="hero-cta">
+    <a href="#work" class="btn btn-grad">View My Work <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a href="#contact" class="btn btn-glass">Get In Touch</a>
+    <div class="cv-wrap">
+      <button class="btn btn-glass cv-toggle" type="button">Get CV
+        <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="cv-menu">
+        <a href="cv-data-scientist.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>Data Scientist CV<small>PDF · résumé</small></span></a>
+        <a href="cv-ml-engineer.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>ML Engineer CV<small>PDF · résumé</small></span></a>
+        <a href="cv-analyst.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>Data Analyst CV<small>PDF · résumé</small></span></a>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- FOCUS -->
+<section id="focus" class="wrap">
+  <div class="eyebrow rv">Core focus</div>
+  <h2 class="h2 rv">Three things I do best</h2>
+  <div class="focus-row stagger">
+    <div class="fcard glass"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19h16M7 16V9M12 16V5M17 16v-7" stroke-linecap="round"/></svg></div><h3>Predictive Modelling</h3><p>I design, tune and validate models that stay accurate on unseen data — from feature engineering and cross-validation to handling class imbalance and preventing overfitting.</p></div>
+    <div class="fcard glass"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="9" r="2.4"/><circle cx="9" cy="18" r="2.4"/><path d="M8 7l8 1.5M7.5 16l1-7M16 11l-6 6" stroke-linecap="round"/></svg></div><h3>Explainable AI</h3><p>Every prediction comes with a reason. I use SHAP and rigorous diagnostics to show which factors drive each score — turning black-box output into decisions stakeholders can trust and act on.</p></div>
+    <div class="fcard glass"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9l2.5 2.5L7 14M13 14h4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Production Deployment</h3><p>I ship models as real products — wrapping them in FastAPI services and React interfaces, so the work delivers value to users instead of sitting idle in a notebook.</p></div>
+  </div>
+</section>
+
+<!-- EXPERTISE BENTO -->
+<section id="do" class="wrap">
+  <div class="eyebrow rv">What I do</div>
+  <h2 class="h2 rv">Across the data lifecycle</h2>
+  <div class="bento stagger">
+    <div class="bcell glass lg"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19h16M7 16V9M12 16V5M17 16v-7" stroke-linecap="round"/></svg></div><h3>Machine Learning &amp; Modelling</h3><p>End-to-end model development — feature engineering, algorithm selection, hyperparameter tuning and honest evaluation. I build Random Forest, XGBoost and regression models that generalise, not just memorise.</p></div>
+    <div class="bcell glass"><span class="bn">Analytics</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><h3>EDA &amp; Visualization</h3></div>
+    <div class="bcell glass"><span class="bn">Interpret</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="9" r="2.2"/><circle cx="9" cy="18" r="2.2"/><path d="M8 7l8 1.5M7.5 16l1-7M16 11l-6 6" stroke-linecap="round"/></svg></div><h3>Explainable AI</h3></div>
+    <div class="bcell glass wide"><span class="bn">Ship it</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4" stroke-linecap="round"/></svg></div><h3>Deployment — FastAPI &amp; React</h3></div>
+    <div class="bcell glass"><span class="bn">Foundation</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20h18M4 20c0-7 3-12 8-12s8 5 8 12" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 20l3-2 3 1 2-3 2 2 3-2 3 1" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/></svg></div><h3>Statistical Rigour</h3></div>
+    <div class="bcell glass"><span class="bn">Spatial</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2"/></svg></div><h3>Geospatial ML</h3></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marq"><div class="tk">
+  <span>Python</span><span>XGBoost</span><span>SHAP</span><span>FastAPI</span><span>React</span><span>SQL</span><span>Geospatial ML</span>
+  <span>Python</span><span>XGBoost</span><span>SHAP</span><span>FastAPI</span><span>React</span><span>SQL</span><span>Geospatial ML</span>
+</div></div>
+
+<!-- WORK -->
+<section id="work" class="wrap">
+  <div class="eyebrow rv">Selected work</div>
+  <h2 class="h2 rv">Projects I've shipped</h2>
+  <div class="work-grid stagger">
+
+    <div class="work glass">
+      <div class="viz"><svg width="78%" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">
+        <text class="lbl" x="10" y="14">Flood risk map</text>
+        <defs>
+          <linearGradient id="riskG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9aa05f"/><stop offset=".5" stop-color="#d99a4e"/><stop offset="1" stop-color="#c0673f"/></linearGradient>
+          <linearGradient id="waterG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d98a5e" stop-opacity=".55"/><stop offset="1" stop-color="#c0673f" stop-opacity=".25"/></linearGradient>
+          <clipPath id="frame"><rect x="10" y="22" width="180" height="90" rx="10"/></clipPath>
+        </defs>
+        <rect x="10" y="22" width="180" height="90" rx="10" fill="url(#riskG)" opacity=".14"/>
+        <g clip-path="url(#frame)">
+          <path class="ln" d="M10 50 Q60 38 100 50 T190 48" fill="none" stroke="rgba(22,20,15,.18)" stroke-width="1" style="transition-delay:.2s"/>
+          <path class="ln" d="M10 68 Q70 58 120 70 T190 66" fill="none" stroke="rgba(22,20,15,.14)" stroke-width="1" style="transition-delay:.35s"/>
+          <path class="wave" d="M-20 86 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 V120 H-20 Z" fill="url(#waterG)">
+            <animateTransform attributeName="transform" type="translate" from="0 0" to="-80 0" dur="4s" repeatCount="indefinite"/>
+          </path>
+          <path class="wave" d="M-20 92 q20 -5 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 V120 H-20 Z" fill="url(#waterG)" opacity=".7">
+            <animateTransform attributeName="transform" type="translate" from="-80 0" to="0 0" dur="5s" repeatCount="indefinite"/>
+          </path>
+        </g>
+        <g class="pop" style="transition-delay:.5s">
+          <path d="M100 38c-9 0-16 7-16 16 0 11 16 26 16 26s16-15 16-26c0-9-7-16-16-16z" fill="url(#riskG)" stroke="#16140f" stroke-width="1.5"/>
+          <circle cx="100" cy="54" r="6" fill="#fffdf9"/>
+        </g>
+        <circle class="pop" cx="150" cy="34" r="3" fill="#9aa05f" style="transition-delay:.7s"/>
+        <circle class="pop" cx="162" cy="34" r="3" fill="#d99a4e" style="transition-delay:.8s"/>
+        <circle class="pop" cx="174" cy="34" r="3" fill="#c0673f" style="transition-delay:.9s"/>
+      </svg></div>
+      <div class="info"><h3>Kerala Flood Risk Engine</h3><p>A hybrid system that scores flood risk for any property in Kerala — combining a Random Forest model with physics-based hydrology rules and SHAP explanations, served through a FastAPI backend and an interactive React heatmap.</p>
+        <div class="tags"><span class="tg">Random Forest</span><span class="tg">SHAP</span><span class="tg">FastAPI</span><span class="tg">Geospatial</span></div>
+        <div class="wlinks">
+          <span class="wlink soon">Code &amp; demo coming soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="work glass">
+      <div class="viz"><svg width="62%" viewBox="0 0 160 110" preserveAspectRatio="xMidYMid meet">
+        <text class="lbl" x="56" y="14">Churn probability</text>
+        <defs><linearGradient id="cg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c0673f"/><stop offset="1" stop-color="#d99a4e"/></linearGradient></defs>
+        <circle cx="80" cy="58" r="38" fill="none" stroke="rgba(22,20,15,.10)" stroke-width="12"/>
+        <circle class="pop" cx="80" cy="58" r="38" fill="none" stroke="url(#cg1)" stroke-width="12" stroke-dasharray="140 240" stroke-linecap="round" transform="rotate(-90 80 58)" style="transition-delay:.3s"/>
+        <text x="80" y="64" text-anchor="middle" fill="#16140f" font-family="Bricolage Grotesque" font-size="20">0.30</text>
+      </svg></div>
+      <div class="info"><h3>Telco Churn Predictor</h3><p>An XGBoost classifier that flags at-risk customers early — engineered to handle class imbalance, with the decision threshold tuned for recall and validated on ROC-AUC in a live dashboard.</p>
+        <div class="tags"><span class="tg">XGBoost</span><span class="tg">ROC-AUC</span><span class="tg">Python</span></div>
+        <div class="wlinks">
+          <a class="wlink live" href="https://telco-churn-app-cyqpjag2mufddo5pt2cbqh.streamlit.app/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Live Demo</a>
+          <a class="wlink code" href="https://github.com/sayandp/telco-churn-streamlit" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work glass">
+      <div class="viz"><svg width="80%" viewBox="0 0 200 110" preserveAspectRatio="xMidYMid meet">
+        <text class="lbl" x="8" y="14">Win probability</text>
+        <text class="lbl" x="8" y="40">HOME</text><rect x="48" y="32" width="144" height="11" rx="5.5" fill="rgba(22,20,15,.08)"/>
+        <rect class="bx" x="48" y="32" width="92" height="11" rx="5.5" fill="#c0673f" style="transition-delay:.1s"/>
+        <text class="lbl" x="8" y="66">DRAW</text><rect x="48" y="58" width="144" height="11" rx="5.5" fill="rgba(22,20,15,.08)"/>
+        <rect class="bx" x="48" y="58" width="40" height="11" rx="5.5" fill="#b5704a" style="transition-delay:.22s"/>
+        <text class="lbl" x="8" y="92">AWAY</text><rect x="48" y="84" width="144" height="11" rx="5.5" fill="rgba(22,20,15,.08)"/>
+        <rect class="bx" x="48" y="84" width="52" height="11" rx="5.5" fill="#9aa05f" style="transition-delay:.34s"/>
+        <text class="lbl" x="150" y="106">xG 2.1 — 1.3</text>
+      </svg></div>
+      <div class="info"><h3>Premier League Predictor</h3><p>A match-outcome model trained on a decade of fixtures — pairing XGBoost with Monte Carlo simulation and a Poisson goals model to produce calibrated win probabilities and expected goals.</p>
+        <div class="tags"><span class="tg">Monte Carlo</span><span class="tg">Poisson</span><span class="tg">XGBoost</span></div>
+        <div class="wlinks">
+          <a class="wlink live" href="https://premier-league-match-predictor-hkziappotkd3ghtkefvsgcr.streamlit.app/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Live Demo</a>
+          <a class="wlink code" href="https://github.com/sayandp/premier-league-match-predictor" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work glass">
+      <div class="viz"><svg width="72%" viewBox="0 0 200 110" preserveAspectRatio="xMidYMid meet">
+        <text class="lbl" x="10" y="14">Spam classification</text>
+        <defs><linearGradient id="spamG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa05f"/><stop offset="1" stop-color="#c0673f"/></linearGradient></defs>
+        <rect x="22" y="40" width="70" height="44" rx="8" fill="none" stroke="#9aa05f" stroke-width="2.5"/>
+        <path class="pop" d="M40 62l9 9 16-18" fill="none" stroke="#9aa05f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transition-delay:.4s"/>
+        <text class="lbl" x="34" y="98">HAM</text>
+        <rect x="108" y="40" width="70" height="44" rx="8" fill="none" stroke="#c0673f" stroke-width="2.5"/>
+        <path class="pop" d="M126 50l34 24M160 50l-34 24" fill="none" stroke="#c0673f" stroke-width="3" stroke-linecap="round" style="transition-delay:.55s"/>
+        <text class="lbl" x="120" y="98">SPAM</text>
+      </svg></div>
+      <div class="info"><h3>SMS Spam Classifier</h3><p>An NLP pipeline that separates spam from genuine messages with high precision — using TF-IDF feature extraction and a Multinomial Naive Bayes model, with text cleaning and tokenisation built in.</p>
+        <div class="tags"><span class="tg">NLP</span><span class="tg">TF-IDF</span><span class="tg">Naive Bayes</span></div>
+        <div class="wlinks">
+          <a class="wlink code" href="https://github.com/sayandp/sms-spam-classifier" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work glass">
+      <div class="viz"><svg width="80%" viewBox="0 0 200 110" preserveAspectRatio="xMidYMid meet">
+        <text class="lbl" x="8" y="14">Demand forecast</text>
+        <line class="gridline" x1="6" y1="44" x2="194" y2="44"/><line class="gridline" x1="6" y1="72" x2="194" y2="72"/>
+        <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa05f"/><stop offset="1" stop-color="#c0673f"/></linearGradient></defs>
+        <path d="M14 88 L52 66 L90 74 L128 44 L166 54 L190 28 L190 96 L14 96 Z" fill="#c0673f" opacity=".08"/>
+        <polyline class="ln" points="14,88 52,66 90,74 128,44 166,54 190,28" fill="none" stroke="url(#lg1)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle class="pop" cx="166" cy="54" r="4" fill="#9aa05f" style="transition-delay:1.3s"/>
+        <circle class="pop" cx="190" cy="28" r="4" fill="#c0673f" style="transition-delay:1.5s"/>
+      </svg></div>
+      <div class="info"><h3>Smart Inventory Forecasting</h3><p>A retail demand-forecasting pipeline that predicts future stock needs from historical sales — engineering lag features and rolling trends to recommend reorder levels with safety buffers.</p>
+        <div class="tags"><span class="tg">Forecasting</span><span class="tg">Feature Eng.</span><span class="tg">Python</span></div>
+        <div class="wlinks">
+          <a class="wlink code" href="https://github.com/sayandp/inventory-recommendation-system" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <!-- ABOUT -->
-<section id="about">
-  <div class="section-inner">
-    <p class="section-label">About Me</p>
-    <h2 class="section-title">Passionate about data,<br/>driven by curiosity</h2>
-    <div class="divider"></div>
-    <div class="about-grid">
-      <div class="about-text">
-        <p>
-          I'm Sayand P, an aspiring Data Scientist from Kerala, India, with a strong academic foundation in Statistics and Data Science. I hold a B.Sc. in Statistics with Data Science from the University of Calicut and am currently pursuing a PG Diploma in Data Science.
-        </p>
-        <p>
-          I love transforming messy, complex data into clean, actionable insights. My hands-on experience spans machine learning, NLP, statistical analysis, and data visualization — with 3 live deployed apps including a churn predictor, sports analytics tool, and NLP classifier.
-        </p>
-        <p>
-          I'm actively seeking remote internships and entry-level roles in Data Science and Data Analytics where I can contribute, learn, and grow.
-        </p>
-      </div>
-      <div class="about-stats">
-        <div class="stat-card">
-          <div class="stat-num">4</div>
-          <div class="stat-label">Projects on GitHub</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">3</div>
-          <div class="stat-label">Live Deployed Apps</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">6.975</div>
-          <div class="stat-label">CGPA (First Class)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">100%</div>
-          <div class="stat-label">Remote Ready</div>
-        </div>
-      </div>
+<section id="about" class="wrap">
+  <div class="eyebrow rv">About me</div>
+  <h2 class="h2 rv">A closer look</h2>
+  <div class="glass rv" style="padding:clamp(2rem,5vw,3rem);margin-top:2rem">
+    <p style="color:var(--gray);font-size:1.05rem;max-width:680px;margin-bottom:1rem">I'm <b style="color:var(--ink);font-weight:500">Sayand</b>, a data scientist based in Kerala, India, with a foundation in Statistics and Data Science from the University of Calicut and a PG Diploma in Data Science in progress.</p>
+    <p style="color:var(--gray);font-size:1.05rem;max-width:680px">I work across the full lifecycle — analysis, feature engineering, modelling and tuning, explainability, and shipping the result as a live app or API. I care less about idle notebooks and more about systems people can use.</p>
+    <div class="bars" id="bars">
+      <div><div class="bar-head"><span class="nm">Python</span><span class="lv">Advanced</span></div><div class="bar-track"><div class="bar-fill" data-w="92"></div></div></div>
+      <div><div class="bar-head"><span class="nm">Machine Learning</span><span class="lv">Advanced</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+      <div><div class="bar-head"><span class="nm">Pandas / NumPy</span><span class="lv">Advanced</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
+      <div><div class="bar-head"><span class="nm">scikit-learn / XGBoost</span><span class="lv">Advanced</span></div><div class="bar-track"><div class="bar-fill" data-w="86"></div></div></div>
+      <div><div class="bar-head"><span class="nm">Statistics</span><span class="lv">Proficient</span></div><div class="bar-track"><div class="bar-fill" data-w="84"></div></div></div>
+      <div><div class="bar-head"><span class="nm">FastAPI / Deployment</span><span class="lv">Proficient</span></div><div class="bar-track"><div class="bar-fill" data-w="75"></div></div></div>
     </div>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-inner">
-    <p class="section-label">Technical Skills</p>
-    <h2 class="section-title">Tools &amp; Technologies</h2>
-    <div class="divider"></div>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#EFF6FF;">🐍</div>
-          <div class="skill-card-title">Programming Languages</div>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Python</span><span class="tag">R</span><span class="tag">SQL</span><span class="tag">HTML</span><span class="tag">CSS</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#F0FDF4;">🤖</div>
-          <div class="skill-card-title">Machine Learning &amp; NLP</div>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Regression</span><span class="tag">Classification</span><span class="tag">Clustering</span><span class="tag">TF-IDF</span><span class="tag">Naive Bayes</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#FFF7ED;">📊</div>
-          <div class="skill-card-title">Data Analysis</div>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">EDA</span><span class="tag">Feature Engineering</span><span class="tag">Excel</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#FDF4FF;">📈</div>
-          <div class="skill-card-title">Visualization</div>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Matplotlib</span><span class="tag">Seaborn</span><span class="tag">Tableau</span><span class="tag">Power BI</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#F0FDF4;">📐</div>
-          <div class="skill-card-title">Statistics</div>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Hypothesis Testing</span><span class="tag">Time Series</span><span class="tag">Multivariate</span><span class="tag">Regression Diagnostics</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#EFF6FF;">🛠️</div>
-          <div class="skill-card-title">Tools &amp; Dev</div>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Jupyter</span><span class="tag">Streamlit</span><span class="tag">VS Code</span><span class="tag">LaTeX</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="section-inner">
-    <p class="section-label">Portfolio</p>
-    <h2 class="section-title">Featured Projects</h2>
-    <div class="divider"></div>
-    <div class="projects-grid">
-
-      <div class="project-card">
-        <div class="project-top">
-          <div class="project-icon">🚫</div>
-          <span class="project-badge">Live Demo</span>
-        </div>
-        <h3 class="project-title">SMS Spam Classifier</h3>
-        <p class="project-desc">End-to-end NLP pipeline: text preprocessing, TF-IDF vectorization, Naive Bayes classifier. Model serialized with Pickle and deployed as a live Streamlit app for real-time spam detection.</p>
-        <div class="project-footer">
-          <div class="project-stack">
-            <span class="stack-tag">Python</span><span class="stack-tag">TF-IDF</span><span class="stack-tag">Naive Bayes</span><span class="stack-tag">Streamlit</span><span class="stack-tag">NLP</span>
-          </div>
-          <div style="margin-top:10px;display:flex;gap:8px;">
-            <a href="https://share.streamlit.io/sayandp/sms-spam-classifier/main/app.py" target="_blank" style="font-size:0.75rem;color:#2563EB;text-decoration:none;font-weight:600;">&#9654; Live Demo</a>
-            <span style="color:#CBD5E1;">|</span>
-            <a href="https://github.com/sayandp/sms-spam-classifier" target="_blank" style="font-size:0.75rem;color:#64748B;text-decoration:none;font-weight:500;">GitHub &rarr;</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-top">
-          <div class="project-icon">&#128201;</div>
-          <span class="project-badge">Live Demo</span>
-        </div>
-        <h3 class="project-title">Telco Customer Churn Predictor</h3>
-        <p class="project-desc">XGBoost classifier predicting telecom customer churn. Handles class imbalance with scale_pos_weight, custom threshold (0.30) for improved recall, evaluated with ROC-AUC. Interactive Streamlit dashboard with real-time probability scores.</p>
-        <div class="project-footer">
-          <div class="project-stack">
-            <span class="stack-tag">XGBoost</span><span class="stack-tag">ROC-AUC</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">Streamlit</span><span class="stack-tag">Pandas</span>
-          </div>
-          <div style="margin-top:10px;display:flex;gap:8px;">
-            <a href="https://telco-churn-app-cyqpjag2mufddo5pt2cbqh.streamlit.app/" target="_blank" style="font-size:0.75rem;color:#2563EB;text-decoration:none;font-weight:600;">&#9654; Live Demo</a>
-            <span style="color:#CBD5E1;">|</span>
-            <a href="https://github.com/sayandp" target="_blank" style="font-size:0.75rem;color:#64748B;text-decoration:none;font-weight:500;">GitHub &rarr;</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-top">
-          <div class="project-icon">&#9917;</div>
-          <span class="project-badge">Live Demo</span>
-        </div>
-        <h3 class="project-title">Premier League Match Predictor</h3>
-        <p class="project-desc">ML system predicting match outcomes using XGBoost on 10 years of data (2014-2025). Integrates Monte Carlo simulation for scoreline probabilities and Poisson goal modeling. Dashboard shows win probability bars, expected goals, and head-to-head stats.</p>
-        <div class="project-footer">
-          <div class="project-stack">
-            <span class="stack-tag">XGBoost</span><span class="stack-tag">Monte Carlo</span><span class="stack-tag">Poisson Model</span><span class="stack-tag">Streamlit</span><span class="stack-tag">Sports Analytics</span>
-          </div>
-          <div style="margin-top:10px;display:flex;gap:8px;">
-            <a href="https://premier-league-match-predictor-hkziappotkd3ghtkefvsgcr.streamlit.app/" target="_blank" style="font-size:0.75rem;color:#2563EB;text-decoration:none;font-weight:600;">&#9654; Live Demo</a>
-            <span style="color:#CBD5E1;">|</span>
-            <a href="https://github.com/sayandp" target="_blank" style="font-size:0.75rem;color:#64748B;text-decoration:none;font-weight:500;">GitHub &rarr;</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-top">
-          <div class="project-icon">&#128230;</div>
-          <span class="project-badge">Complete</span>
-        </div>
-        <h3 class="project-title">Smart Inventory Recommendation System</h3>
-        <p class="project-desc">End-to-end demand forecasting pipeline on real UK retail data. Built lag features, time-based variables, and public holiday indicators. Regression model outputs demand ranges with safety buffer stock recommendations via an interactive Streamlit dashboard.</p>
-        <div class="project-footer">
-          <div class="project-stack">
-            <span class="stack-tag">Python</span><span class="stack-tag">Feature Engineering</span><span class="stack-tag">Regression</span><span class="stack-tag">Streamlit</span><span class="stack-tag">Retail Analytics</span>
-          </div>
-          <div style="margin-top:10px;display:flex;gap:8px;">
-            <a href="https://github.com/sayandp" target="_blank" style="font-size:0.75rem;color:#64748B;text-decoration:none;font-weight:500;">GitHub &rarr;</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div style="text-align:center; margin-top:2.5rem;">
-      <a href="https://github.com/sayandp" target="_blank" class="btn-outline">View All on GitHub →</a>
-    </div>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="education">
-  <div class="section-inner">
-    <p class="section-label">Education</p>
-    <h2 class="section-title">Academic Background</h2>
-    <div class="divider"></div>
-    <div class="edu-list">
-      <div class="edu-card">
-        <div class="edu-icon">🎓</div>
-        <div>
-          <div class="edu-degree">PG Diploma in Data Science</div>
-          <div class="edu-school">University of Calicut</div>
-          <div class="edu-meta">2025 – Present &nbsp;·&nbsp; Kerala, India</div>
-          <div class="edu-meta" style="margin-top:6px;">Machine Learning · Statistical Inference · Data Visualization · Python for Data Science</div>
-          <span class="edu-badge">Currently Pursuing</span>
-        </div>
-      </div>
-      <div class="edu-card">
-        <div class="edu-icon">📘</div>
-        <div>
-          <div class="edu-degree">B.Sc. Statistics with Data Science</div>
-          <div class="edu-school">University of Calicut</div>
-          <div class="edu-meta">2021 – 2024 &nbsp;·&nbsp; CGPA: 6.975 / 10 &nbsp;·&nbsp; 69.75% &nbsp;·&nbsp; First Class</div>
-          <div class="edu-meta" style="margin-top:6px;">Probability · Regression Analysis · Time Series · Multivariate Analysis · ML · Python · R · Tableau</div>
-          <span class="edu-badge">First Class</span>
-        </div>
-      </div>
-    </div>
+<!-- JOURNEY -->
+<section id="journey" class="wrap">
+  <div class="eyebrow rv">Journey</div>
+  <h2 class="h2 rv">Education &amp; experience</h2>
+  <div class="tl">
+    <div class="tl-item rv"><div class="yr">2025 — Present</div><div class="org">University of Calicut</div><p><b style="color:var(--ink);font-weight:500">PG Diploma in Data Science.</b> Advanced ML, statistical inference, visualization, and the Kerala Flood Risk Engine.</p></div>
+    <div class="tl-item rv"><div class="yr">2024 — 2025</div><div class="org">Self-directed</div><p><b style="color:var(--ink);font-weight:500">Independent ML projects.</b> Three live apps — churn, sports analytics, NLP — with end-to-end ownership.</p></div>
+    <div class="tl-item rv"><div class="yr">2021 — 2024</div><div class="org">University of Calicut</div><p><b style="color:var(--ink);font-weight:500">B.Sc. Statistics with Data Science.</b> Probability, regression, time series, multivariate analysis, Python, R.</p></div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
-  <div class="section-inner">
-    <p class="section-label">Get In Touch</p>
-    <h2 class="section-title">Let's Work Together</h2>
-    <p class="section-sub">I'm actively looking for remote internships and entry-level Data Scientist / Data Analyst roles. Reach out — I'd love to connect!</p>
-    <div class="contact-links">
-      <a href="mailto:sayandp0@gmail.com" class="contact-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        sayandp0@gmail.com
+<section id="contact" class="wrap">
+  <div class="contact-card glass rv">
+    <div class="eyebrow" style="justify-content:center;display:flex">Let's connect</div>
+    <h2>Let's build something with your data</h2>
+    <p>I'm open to remote and on-site roles as a Data Scientist, ML Engineer, or Analyst. If you have data worth turning into decisions, I'd love to talk.</p>
+    <div class="hero-cta">
+      <a href="mailto:sayandp0@gmail.com" class="btn btn-grad">Send a Message <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="https://github.com/sayandp" target="_blank" class="btn btn-glass">See My Work</a>
+      <div class="cv-wrap up">
+        <button class="btn btn-glass cv-toggle" type="button">Get CV
+          <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="cv-menu">
+          <a href="cv-data-scientist.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>Data Scientist CV<small>PDF · résumé</small></span></a>
+          <a href="cv-ml-engineer.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>ML Engineer CV<small>PDF · résumé</small></span></a>
+          <a href="cv-analyst.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>Data Analyst CV<small>PDF · résumé</small></span></a>
+        </div>
+      </div>
+    </div>
+    <div class="socials">
+      <a class="soc" href="https://github.com/sayandp" target="_blank" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05A9.36 9.36 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
       </a>
-      <a href="https://www.linkedin.com/in/sayand-p-2215a9225/" target="_blank" class="contact-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        LinkedIn
+      <a class="soc" href="https://www.linkedin.com/in/sayand-p-2215a9225/" target="_blank" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
       </a>
-      <a href="https://github.com/sayandp" target="_blank" class="contact-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        GitHub
+      <a class="soc" href="mailto:sayandp0@gmail.com" aria-label="Email" title="sayandp0@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
   </div>
 </section>
 
-<footer>
-  <p>Designed &amp; built by Sayand P · Kerala, India · Open to Remote Opportunities</p>
+<footer class="wrap">
+  <div class="foot">
+    <div>© 2026 Sayand P</div>
+    <div class="links"><a href="mailto:sayandp0@gmail.com">Email</a><a href="https://www.linkedin.com/in/sayand-p-2215a9225/" target="_blank">LinkedIn</a><a href="https://github.com/sayandp" target="_blank">GitHub</a></div>
+    <div>Kerala, India</div>
+  </div>
 </footer>
 
+<button class="to-top" id="toTop" aria-label="Top"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+
+<script>
+/* hero line reveal */
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('heroName')?.classList.add('go'),140));
+
+/* reveal + stagger */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.14});
+document.querySelectorAll('.rv,.stagger').forEach(el=>io.observe(el));
+
+/* progress + to-top */
+const prog=document.getElementById('prog'),toTop=document.getElementById('toTop');
+addEventListener('scroll',()=>{const h=document.documentElement,p=h.scrollTop/(h.scrollHeight-h.clientHeight);
+  prog.style.width=(p*100)+'%';toTop.classList.toggle('show',h.scrollTop>700);},{passive:true});
+toTop.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+/* skill bars */
+const barIO=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+  e.target.querySelectorAll('.bar-fill').forEach((b,i)=>setTimeout(()=>b.style.width=b.dataset.w+'%',i*80));barIO.unobserve(e.target);}})},{threshold:.3});
+const bars=document.getElementById('bars');if(bars)barIO.observe(bars);
+
+/* work cards — trigger inline chart animations */
+const workIO=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');workIO.unobserve(e.target);}})},{threshold:.25});
+document.querySelectorAll('.work').forEach(w=>workIO.observe(w));
+
+/* custom cursor + spotlight */
+if(matchMedia('(hover:hover)').matches){
+  document.body.classList.add('cur');
+  const dot=document.querySelector('.cur-dot'),ring=document.querySelector('.cur-ring'),spot=document.getElementById('spot');
+  let dx=innerWidth/2,dy=innerHeight/2,rx=dx,ry=dy;
+  addEventListener('mousemove',e=>{dx=e.clientX;dy=e.clientY;dot.style.transform=`translate(${dx}px,${dy}px) translate(-50%,-50%)`;
+    spot.style.setProperty('--mx',dx+'px');spot.style.setProperty('--my',dy+'px');});
+  (function f(){rx+=(dx-rx)*.18;ry+=(dy-ry)*.18;ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;requestAnimationFrame(f);})();
+  document.querySelectorAll('a,button,.btn,.work,.fcard,.bcell').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hot'));el.addEventListener('mouseleave',()=>ring.classList.remove('hot'));});
+}
+
+/* magnetic buttons */
+if(matchMedia('(hover:hover)').matches){
+  document.querySelectorAll('.btn').forEach(b=>{
+    b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.22}px,${(e.clientY-r.top-r.height/2)*.34}px)`;});
+    b.addEventListener('mouseleave',()=>b.style.transform='');});
+}
+
+/* CV dropdown toggle */
+document.querySelectorAll('.cv-toggle').forEach(btn=>{
+  btn.addEventListener('click',e=>{e.stopPropagation();const w=btn.closest('.cv-wrap');
+    document.querySelectorAll('.cv-wrap.open').forEach(o=>{if(o!==w)o.classList.remove('open');});
+    w.classList.toggle('open');});
+});
+document.addEventListener('click',()=>document.querySelectorAll('.cv-wrap.open').forEach(o=>o.classList.remove('open')));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.cv-wrap.open').forEach(o=>o.classList.remove('open'));});
+
+/* gentle 3D tilt on cards (excludes bento to avoid icon shake) */
+if(matchMedia('(hover:hover)').matches){
+  document.querySelectorAll('.fcard,.work').forEach(c=>{
+    let raf;
+    c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();
+      const rx=((e.clientY-r.top)/r.height-.5)*-4,ry=((e.clientX-r.left)/r.width-.5)*4;
+      cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{c.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-5px)`;});});
+    c.addEventListener('mouseleave',()=>{cancelAnimationFrame(raf);c.style.transform='';});});
+}
+</script>
 </body>
 </html>
