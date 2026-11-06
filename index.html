@@ -4,82 +4,56 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sayand P — Data Scientist</title>
-<meta name="description" content="Data scientist and ML engineer in Kerala. A live Malayalam crop-price bot, a nine-agent data platform, property-level flood risk — with the measurements attached.">
+<meta name="description" content="Data scientist and ML engineer in Kerala. Four systems, drawn and measured: a Malayalam crop-price bot, a nine-agent data platform, property-level flood risk, bilingual scheme retrieval.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Archivo:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: floating glass panels over a slow-drifting aurora field.
-   Everything is translucent and blurred; depth comes from light, not borders. */
+/* Layout: a scientific monograph — asymmetric grid, numbered plates, hairline rules.
+   Every illustration is an accurate drawing of the project it sits beside. */
 :root{
-  --bg:#f4f5fb;
-  --blob-1:#8b5cf6;
-  --blob-2:#22d3ee;
-  --blob-3:#fb7185;
-  --blob-a:.42;
+  --paper:#f2f3ef;
+  --paper-2:#e9eae5;
+  --ink:#14171a;
+  --ink-2:#464b50;
+  --ink-3:#6d737a;
+  --rule:#c9ccc4;
+  --cobalt:#1b3fa0;
+  --ochre:#b3800f;
+  --plate-bg:#fbfbf9;
 
-  --glass:rgba(255,255,255,.55);
-  --glass-2:rgba(255,255,255,.38);
-  --glass-brd:rgba(255,255,255,.75);
-  --glass-hi:rgba(255,255,255,.95);
-  --glass-shadow:0 18px 50px -18px rgba(28,20,70,.32);
+  --display:"Bodoni Moda",Didot,"Times New Roman",serif;
+  --body:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 
-  --fg:#15132a;
-  --fg-soft:#514c70;
-  --fg-mute:#726d90;
-  --accent:#6d28d9;
-  --accent-2:#0e7490;
-
-  --display:"Sora",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --body:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-
-  --r-lg:30px;
-  --r-md:22px;
-  --r-sm:14px;
-  --gut:max(18px,env(safe-area-inset-left,0px));
-  --gut-r:max(18px,env(safe-area-inset-right,0px));
+  --measure:68ch;
+  --gut:max(22px,env(safe-area-inset-left,0px));
+  --gut-r:max(22px,env(safe-area-inset-right,0px));
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#07060f;
-    --blob-1:#7c3aed;
-    --blob-2:#06b6d4;
-    --blob-3:#f43f5e;
-    --blob-a:.40;
-
-    --glass:rgba(255,255,255,.07);
-    --glass-2:rgba(255,255,255,.045);
-    --glass-brd:rgba(255,255,255,.14);
-    --glass-hi:rgba(255,255,255,.4);
-    --glass-shadow:0 24px 60px -22px rgba(0,0,0,.8);
-
-    --fg:#f4f2ff;
-    --fg-soft:#c3bedd;
-    --fg-mute:#938dba;
-    --accent:#c4b5fd;
-    --accent-2:#67e8f9;
+    --paper:#101315;
+    --paper-2:#171b1e;
+    --ink:#eceee9;
+    --ink-2:#b2b8bc;
+    --ink-3:#848b91;
+    --rule:#2b3135;
+    --cobalt:#89a9ff;
+    --ochre:#e0b351;
+    --plate-bg:#15191c;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#07060f;
-  --blob-1:#7c3aed;
-  --blob-2:#06b6d4;
-  --blob-3:#f43f5e;
-  --blob-a:.40;
-
-  --glass:rgba(255,255,255,.07);
-  --glass-2:rgba(255,255,255,.045);
-  --glass-brd:rgba(255,255,255,.14);
-  --glass-hi:rgba(255,255,255,.4);
-  --glass-shadow:0 24px 60px -22px rgba(0,0,0,.8);
-
-  --fg:#f4f2ff;
-  --fg-soft:#c3bedd;
-  --fg-mute:#938dba;
-  --accent:#c4b5fd;
-  --accent-2:#67e8f9;
+  --paper:#101315;
+  --paper-2:#171b1e;
+  --ink:#eceee9;
+  --ink-2:#b2b8bc;
+  --ink-3:#848b91;
+  --rule:#2b3135;
+  --cobalt:#89a9ff;
+  --ochre:#e0b351;
+  --plate-bg:#15191c;
   color-scheme:dark;
 }
 
@@ -87,776 +61,895 @@
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
   margin:0;
-  min-height:100%;
-  background:var(--bg);
-  color:var(--fg);
+  background:var(--paper);
+  color:var(--ink);
   font-family:var(--body);
-  font-size:16px;
-  line-height:1.62;
+  font-size:16.5px;
+  line-height:1.65;
   -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-  position:relative;
 }
 h1,h2,h3{margin:0;text-wrap:balance}
 p{margin:0}
-img{max-width:100%}
 a{color:inherit}
-
-/* ---------- aurora field ---------- */
-.aurora{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  overflow:hidden;
-  pointer-events:none;
-}
-.aurora span{
-  position:absolute;
-  display:block;
-  border-radius:50%;
-  filter:blur(110px);
-  opacity:var(--blob-a);
-  will-change:transform;
-}
-.aurora::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:radial-gradient(130% 80% at 50% 0%,transparent 0%,rgba(255,255,255,.35) 85%);
-}
-:root[data-theme="dark"] .aurora::after{background:radial-gradient(130% 80% at 50% 0%,transparent 0%,rgba(7,6,15,.55) 88%)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .aurora::after{background:radial-gradient(130% 80% at 50% 0%,transparent 0%,rgba(7,6,15,.55) 88%)}}
-.aurora .b1{width:62vmax;height:62vmax;left:-18vmax;top:-22vmax;background:var(--blob-1);animation:drift1 26s ease-in-out infinite alternate}
-.aurora .b2{width:52vmax;height:52vmax;right:-16vmax;top:8vmax;background:var(--blob-2);animation:drift2 32s ease-in-out infinite alternate}
-.aurora .b3{width:46vmax;height:46vmax;left:22vmax;bottom:-20vmax;background:var(--blob-3);animation:drift3 29s ease-in-out infinite alternate}
-@keyframes drift1{to{transform:translate3d(10vmax,8vmax,0) scale(1.12)}}
-@keyframes drift2{to{transform:translate3d(-12vmax,10vmax,0) scale(1.08)}}
-@keyframes drift3{to{transform:translate3d(8vmax,-10vmax,0) scale(1.15)}}
+svg{display:block;max-width:100%;height:auto}
 
 .wrap{
   width:100%;
-  max-width:1140px;
+  max-width:1080px;
   margin-inline:auto;
   padding-left:var(--gut);
   padding-right:var(--gut-r);
 }
 
-/* ---------- glass primitive ---------- */
-.glass{
-  background:var(--glass);
-  -webkit-backdrop-filter:blur(30px) saturate(180%);
-  backdrop-filter:blur(30px) saturate(180%);
-  border:1px solid var(--glass-brd);
-  border-radius:var(--r-lg);
-  box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
-  position:relative;
-  overflow:hidden;
-}
-/* specular sheen that follows the pointer */
-.glass.sheen::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.22),transparent 60%);
-  opacity:0;
-  transition:opacity .4s ease;
-  pointer-events:none;
-}
-.glass.sheen:hover::after{opacity:1}
-
-/* ---------- nav ---------- */
-.nav{
-  position:sticky;
-  top:max(10px,env(safe-area-inset-top,0px));
-  z-index:20;
-  margin-top:14px;
-}
-.nav .bar{
+/* ---------- running head ---------- */
+.head{border-bottom:1px solid var(--rule)}
+.head .wrap{
+  padding-block:13px;
   display:flex;
   align-items:center;
   gap:14px;
   flex-wrap:wrap;
-  padding:10px 10px 10px 20px;
-  border-radius:999px;
 }
-.brand{
+.head .name{
   font-family:var(--display);
-  font-weight:700;
-  letter-spacing:-.01em;
-  font-size:1rem;
+  font-size:1.02rem;
+  font-weight:500;
+  letter-spacing:.02em;
 }
-.nav-links{
+.head nav{
   margin-left:auto;
   display:flex;
-  gap:4px;
+  gap:20px;
   flex-wrap:wrap;
   align-items:center;
-}
-.nav-links a{
-  text-decoration:none;
-  color:var(--fg-soft);
-  font-size:.88rem;
+  font-size:.74rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
   font-weight:500;
-  padding:8px 14px;
-  border-radius:999px;
-  transition:background .25s ease,color .25s ease;
 }
-.nav-links a:hover,.nav-links a:focus-visible{background:var(--glass-2);color:var(--fg)}
+.head nav a{color:var(--ink-3);text-decoration:none}
+.head nav a:hover,.head nav a:focus-visible{color:var(--cobalt)}
 .tt{
   font:inherit;
-  font-size:.88rem;
+  font-size:.74rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
   font-weight:500;
+  background:none;
+  border:none;
+  padding:0;
+  color:var(--ink-3);
   cursor:pointer;
-  color:var(--fg-soft);
-  background:var(--glass-2);
-  border:1px solid var(--glass-brd);
-  border-radius:999px;
-  width:38px;height:38px;
-  display:grid;place-items:center;
 }
-.tt:hover,.tt:focus-visible{color:var(--fg)}
+.tt:hover,.tt:focus-visible{color:var(--cobalt)}
 
-/* ---------- hero ---------- */
-.hero{padding-block:clamp(48px,9vw,96px) clamp(26px,4vw,40px)}
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap:9px;
-  padding:7px 16px 7px 11px;
-  border-radius:999px;
-  font-size:.84rem;
+/* ---------- opening ---------- */
+.open .wrap{padding-block:clamp(46px,8vw,96px) clamp(30px,5vw,54px)}
+.standfirst{
+  font-size:.74rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-3);
   font-weight:600;
-  color:var(--fg-soft);
   margin-bottom:26px;
 }
-.dot{
-  width:8px;height:8px;border-radius:50%;
-  background:#22c55e;
-  box-shadow:0 0 0 4px rgba(34,197,94,.22);
-}
-.hero h1{
+.open h1{
   font-family:var(--display);
-  font-weight:700;
-  font-size:clamp(2.5rem,8.2vw,5.3rem);
-  line-height:1.02;
-  letter-spacing:-.035em;
-  max-width:15ch;
+  font-weight:400;
+  font-size:clamp(2.4rem,7.4vw,5rem);
+  line-height:1.04;
+  letter-spacing:-.012em;
+  max-width:16ch;
 }
-.grad{
-  background:linear-gradient(104deg,var(--blob-1),var(--blob-2) 52%,var(--blob-3));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+.open h1 i{font-style:italic}
+.open .lede{
+  margin-top:26px;
+  max-width:60ch;
+  font-size:clamp(1rem,2.2vw,1.12rem);
+  color:var(--ink-2);
 }
-.hero .lede{
-  margin-top:24px;
-  max-width:58ch;
-  font-size:clamp(1rem,2.4vw,1.16rem);
-  color:var(--fg-soft);
-}
-.cta{
-  margin-top:34px;
+.sig{
+  margin-top:30px;
   display:flex;
-  gap:12px;
+  gap:26px;
   flex-wrap:wrap;
   align-items:center;
+  font-size:.86rem;
 }
-.btn{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  text-decoration:none;
-  font-weight:600;
-  font-size:.94rem;
-  padding:13px 24px;
-  border-radius:999px;
-  border:1px solid var(--glass-brd);
-  background:var(--glass);
-  -webkit-backdrop-filter:blur(20px) saturate(170%);
-  backdrop-filter:blur(20px) saturate(170%);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
-  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;
-}
-.btn:hover,.btn:focus-visible{transform:translateY(-2px)}
-.btn-main{
-  background:linear-gradient(118deg,var(--blob-1),var(--blob-3));
-  border-color:transparent;
-  color:#fff;
-  box-shadow:0 14px 32px -12px rgba(124,58,237,.75),inset 0 1px 0 rgba(255,255,255,.45);
-}
-.btn-main:hover,.btn-main:focus-visible{color:#fff}
-.cv-links{
-  margin-top:18px;
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.cv-links a{
-  text-decoration:none;
-  font-size:.82rem;
-  font-weight:600;
-  color:var(--fg-soft);
-  padding:8px 15px;
-  border-radius:999px;
-  border:1px solid var(--glass-brd);
-  background:var(--glass-2);
-}
-.cv-links a:hover,.cv-links a:focus-visible{color:var(--fg)}
+.sig a{color:var(--cobalt);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}
+.sig a:hover,.sig a:focus-visible{border-bottom-color:var(--cobalt)}
 
-/* ---------- stat tiles ---------- */
-.stats{
-  margin-top:clamp(34px,5vw,52px);
+/* ---------- plates ---------- */
+.plates{border-top:1px solid var(--rule)}
+.plate{
+  border-bottom:1px solid var(--rule);
+  padding-block:clamp(40px,6vw,72px);
+}
+.plate-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
-  gap:14px;
+  grid-template-columns:7.5rem minmax(0,1fr);
+  gap:clamp(20px,3vw,44px);
+  align-items:start;
 }
-.stat{padding:22px 22px 20px;border-radius:var(--r-md)}
-.stat .n{
-  font-family:var(--display);
-  font-weight:700;
-  font-size:clamp(1.7rem,4.2vw,2.3rem);
-  line-height:1.05;
-  letter-spacing:-.03em;
-}
-.stat .l{margin-top:7px;font-size:.86rem;color:var(--fg-mute);line-height:1.4}
-
-/* ---------- sections ---------- */
-.sec{padding-block:clamp(44px,7vw,78px)}
-.sec-title{
-  font-family:var(--display);
-  font-weight:700;
-  font-size:clamp(1.7rem,4.6vw,2.6rem);
-  letter-spacing:-.025em;
-  line-height:1.1;
-}
-.sec-sub{margin-top:10px;color:var(--fg-mute);max-width:56ch}
-.sec-head{margin-bottom:clamp(24px,4vw,38px)}
-
-/* ---------- project cards ---------- */
-.cards{display:grid;gap:18px}
-.card{padding:clamp(24px,3.4vw,38px)}
-.card-top{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px 16px;
-  align-items:baseline;
-  justify-content:space-between;
-}
-.card h3{
-  font-family:var(--display);
-  font-weight:600;
-  font-size:clamp(1.35rem,3.4vw,1.95rem);
-  letter-spacing:-.025em;
-  line-height:1.15;
-  min-width:0;
-}
-.tagline{
-  font-size:.8rem;
-  font-weight:600;
-  color:var(--accent);
-  padding:5px 13px;
-  border-radius:999px;
-  background:var(--glass-2);
-  border:1px solid var(--glass-brd);
-  white-space:nowrap;
-}
-.card p{margin-top:16px;color:var(--fg-soft);max-width:68ch}
-.note{
-  margin-top:20px;
-  padding:16px 18px;
-  border-radius:var(--r-sm);
-  background:var(--glass-2);
-  border:1px solid var(--glass-brd);
-  max-width:68ch;
-}
-.note b{
-  display:block;
-  font-size:.72rem;
-  letter-spacing:.1em;
+.plate-no{
+  font-size:.7rem;
+  letter-spacing:.2em;
   text-transform:uppercase;
-  color:var(--accent-2);
-  margin-bottom:6px;
+  color:var(--ink-3);
+  font-weight:600;
+  padding-top:.7rem;
+  border-top:2px solid var(--ink);
 }
-.note span{color:var(--fg-soft);font-size:.96rem}
-.chips{
-  margin-top:22px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px 22px;
-}
-.chip{min-width:0}
-.chip .v{
+.plate-no .big{
+  display:block;
   font-family:var(--display);
-  font-weight:700;
-  font-size:1.18rem;
-  letter-spacing:-.02em;
+  font-size:2.1rem;
+  letter-spacing:0;
+  color:var(--ink);
+  line-height:1;
+  margin-top:8px;
+  font-weight:400;
+}
+.plate-body{min-width:0}
+.plate h2{
+  font-family:var(--display);
+  font-weight:400;
+  font-size:clamp(1.7rem,4.2vw,2.6rem);
+  line-height:1.12;
+  letter-spacing:-.01em;
+}
+.dek{
+  margin-top:8px;
+  font-size:.78rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ochre);
+  font-weight:600;
+}
+.plate p{margin-top:18px;max-width:var(--measure);color:var(--ink-2)}
+
+figure{
+  margin:30px 0 0;
+  border:1px solid var(--rule);
+  background:var(--plate-bg);
+  padding:clamp(16px,2.6vw,26px);
+}
+figure svg{width:100%}
+figcaption{
+  margin-top:16px;
+  padding-top:12px;
+  border-top:1px solid var(--rule);
+  font-size:.82rem;
+  color:var(--ink-3);
+  max-width:62ch;
+}
+figcaption b{color:var(--ink-2);font-weight:600}
+
+.found{
+  margin-top:26px;
+  padding-left:18px;
+  border-left:2px solid var(--ochre);
+  max-width:var(--measure);
+}
+.found b{
+  display:block;
+  font-size:.7rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ochre);
+  margin-bottom:6px;
+  font-weight:600;
+}
+.found span{color:var(--ink-2)}
+
+.facts{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
+  gap:18px 24px;
+  border-top:1px solid var(--rule);
+  padding-top:18px;
+  max-width:var(--measure);
+}
+.fact .v{
+  font-family:var(--display);
+  font-size:1.5rem;
+  font-weight:500;
+  line-height:1.05;
   font-variant-numeric:tabular-nums;
 }
-.chip .k{font-size:.76rem;color:var(--fg-mute);margin-top:1px}
-.stack{
+.fact .k{
+  font-size:.74rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  margin-top:4px;
+}
+.tools{
   margin-top:22px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  padding:0;
-  list-style:none;
-}
-.stack li{
-  font-size:.76rem;
-  font-weight:500;
-  color:var(--fg-mute);
-  padding:5px 12px;
-  border-radius:999px;
-  background:var(--glass-2);
-  border:1px solid var(--glass-brd);
-}
-.go{
-  margin-top:24px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.go a{
-  text-decoration:none;
-  font-size:.86rem;
-  font-weight:600;
-  padding:10px 18px;
-  border-radius:999px;
-  border:1px solid var(--glass-brd);
-  background:var(--glass-2);
-  transition:transform .22s cubic-bezier(.2,.8,.2,1);
-}
-.go a:hover,.go a:focus-visible{transform:translateY(-2px)}
-.go a.key{
-  background:linear-gradient(118deg,var(--blob-2),var(--blob-1));
-  border-color:transparent;
-  color:#fff;
-  box-shadow:0 12px 26px -12px rgba(6,182,212,.7);
-}
-
-/* ---------- practice ---------- */
-.trio{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(252px,1fr));
-  gap:16px;
-}
-.trio .glass{padding:26px;border-radius:var(--r-md)}
-.trio h3{
-  font-family:var(--display);
-  font-weight:600;
-  font-size:1.16rem;
-  letter-spacing:-.015em;
-}
-.trio p{margin-top:10px;font-size:.94rem;color:var(--fg-soft)}
-.num{
-  font-family:var(--display);
-  font-weight:700;
   font-size:.82rem;
-  color:var(--accent);
-  margin-bottom:12px;
-  display:block;
+  color:var(--ink-3);
+  max-width:var(--measure);
 }
-
-/* ---------- compact list ---------- */
-.mini{display:grid;gap:12px}
-.mini .glass{
-  padding:20px 24px;
-  border-radius:var(--r-md);
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px 18px;
-  align-items:center;
-}
-.mini .t{font-family:var(--display);font-weight:600;font-size:1.02rem;letter-spacing:-.015em}
-.mini .d{flex:1 1 280px;min-width:0;color:var(--fg-mute);font-size:.9rem}
-.mini a{
-  text-decoration:none;
-  font-size:.82rem;
+.tools b{
+  color:var(--ink-2);
   font-weight:600;
-  color:var(--accent);
-  padding:6px 14px;
-  border-radius:999px;
-  border:1px solid var(--glass-brd);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  font-size:.72rem;
+  margin-right:8px;
 }
-.mini a:hover,.mini a:focus-visible{background:var(--glass-2)}
-
-/* ---------- about ---------- */
-.about-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
-  gap:18px;
-}
-.about-grid .glass{padding:clamp(24px,3.2vw,36px)}
-.about-grid p{color:var(--fg-soft);max-width:60ch}
-.about-grid p+p{margin-top:14px}
-.tl{list-style:none;margin:0;padding:0;display:grid;gap:20px}
-.tl li{display:grid;gap:3px}
-.tl .yr{font-size:.78rem;font-weight:600;color:var(--accent);letter-spacing:.04em}
-.tl .w{font-family:var(--display);font-weight:600;font-size:1.02rem;letter-spacing:-.015em}
-.tl .s{font-size:.88rem;color:var(--fg-mute)}
-
-/* ---------- contact ---------- */
-.contact{padding:clamp(32px,5vw,58px);text-align:center;border-radius:var(--r-lg)}
-.contact h2{
-  font-family:var(--display);
-  font-weight:700;
-  font-size:clamp(1.9rem,5.4vw,3rem);
-  letter-spacing:-.03em;
-  line-height:1.08;
-}
-.contact p{margin:14px auto 0;color:var(--fg-soft);max-width:48ch}
-.contact .cta{justify-content:center}
-.mailline{
+.out{
   margin-top:20px;
-  font-family:var(--display);
+  display:flex;
+  gap:10px 24px;
+  flex-wrap:wrap;
+  font-size:.86rem;
+  font-weight:500;
+}
+.out a{color:var(--cobalt);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.out a:hover,.out a:focus-visible{color:var(--ink)}
+
+/* ---------- appendix ---------- */
+.appendix{border-bottom:1px solid var(--rule);padding-block:clamp(38px,5vw,60px)}
+.sec-label{
+  font-size:.72rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-3);
   font-weight:600;
-  font-size:clamp(1rem,2.6vw,1.2rem);
-  letter-spacing:-.01em;
+  margin-bottom:26px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--rule);
+}
+.rows{display:grid}
+.row{
+  display:grid;
+  grid-template-columns:minmax(0,14rem) minmax(0,1fr) auto;
+  gap:6px 24px;
+  align-items:baseline;
+  padding-block:15px;
+  border-bottom:1px solid var(--rule);
+}
+.row:last-child{border-bottom:none}
+.row .t{font-family:var(--display);font-size:1.08rem;font-weight:500}
+.row .d{color:var(--ink-3);font-size:.9rem;min-width:0}
+.row .l{display:flex;gap:14px;font-size:.8rem;white-space:nowrap}
+.row .l a{color:var(--cobalt);text-decoration:none;border-bottom:1px solid var(--rule)}
+.row .l a:hover,.row .l a:focus-visible{border-bottom-color:var(--cobalt)}
+
+/* ---------- method ---------- */
+.method{border-bottom:1px solid var(--rule);padding-block:clamp(38px,5vw,60px)}
+.three{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:34px;
+}
+.three h3{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:1.22rem;
+  line-height:1.25;
+  padding-top:14px;
+  border-top:2px solid var(--ink);
+}
+.three p{margin-top:10px;font-size:.94rem;color:var(--ink-2)}
+
+/* ---------- colophon ---------- */
+.colophon{padding-block:clamp(38px,5vw,60px)}
+.colo-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+  gap:34px 56px;
+}
+.colo-grid p{color:var(--ink-2);max-width:58ch}
+.colo-grid p+p{margin-top:14px}
+.cv-block{border-top:2px solid var(--ink);padding-top:14px}
+.cv-block h3{
+  font-family:var(--display);
+  font-size:1.1rem;
+  font-weight:500;
+  margin-bottom:12px;
+}
+.cv-list{display:grid;gap:9px;margin:0;padding:0;list-style:none;font-size:.9rem}
+.cv-list a{color:var(--cobalt);text-decoration:none;border-bottom:1px solid var(--rule)}
+.cv-list a:hover,.cv-list a:focus-visible{border-bottom-color:var(--cobalt)}
+.edu{margin-top:30px;border-top:1px solid var(--rule);padding-top:16px;display:grid;gap:14px}
+.edu div{display:grid;gap:2px}
+.edu .y{font-size:.74rem;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
+.edu .w{font-weight:600;font-size:.95rem}
+.edu .s{font-size:.86rem;color:var(--ink-3)}
+
+.closing{
+  border-top:1px solid var(--rule);
+  padding-block:clamp(40px,6vw,70px) clamp(30px,4vw,44px);
+}
+.closing h2{
+  font-family:var(--display);
+  font-weight:400;
+  font-size:clamp(1.8rem,5vw,3rem);
+  line-height:1.1;
+  max-width:18ch;
+}
+.closing p{margin-top:16px;color:var(--ink-2);max-width:52ch}
+.mail{
+  margin-top:24px;
+  font-family:var(--display);
+  font-size:clamp(1.15rem,3.4vw,1.7rem);
   user-select:all;
 }
+.closing .sig{margin-top:18px}
 .foot{
-  padding-block:30px 40px;
-  text-align:center;
-  color:var(--fg-mute);
-  font-size:.84rem;
+  border-top:1px solid var(--rule);
+  padding-block:18px 26px;
+  font-size:.76rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 20px;
+  justify-content:space-between;
 }
 
-:where(a,button):focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+:where(a,button):focus-visible{outline:2px solid var(--cobalt);outline-offset:3px}
 
-@media (max-width:560px){
-  .nav .bar{border-radius:24px;padding:12px 14px;gap:10px}
-  .nav-links{margin-left:0;width:100%;justify-content:space-between;gap:2px}
-  .nav-links a{padding:7px 9px}
-}
-@media (max-width:820px){
-  .about-grid{grid-template-columns:minmax(0,1fr)}
-  .nav .bar{padding-left:16px}
-  .nav-links a{padding:7px 11px;font-size:.84rem}
+/* one-time draw-on, ends visible */
+@keyframes draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+.drawn{stroke-dasharray:var(--len);animation:draw 1.5s ease-out both}
+
+@media (max-width:760px){
+  .plate-grid{grid-template-columns:minmax(0,1fr);gap:16px}
+  .plate-no{display:flex;align-items:baseline;gap:12px;padding-top:.5rem}
+  .plate-no .big{margin-top:0;font-size:1.5rem}
+  .row{grid-template-columns:minmax(0,1fr)}
+  .colo-grid{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .aurora span{animation:none}
-  *{transition:none!important}
+  .drawn{animation:none;stroke-dasharray:none}
 }
 </style>
 </head>
 <body>
 
-<div class="aurora" aria-hidden="true">
-  <span class="b1"></span><span class="b2"></span><span class="b3"></span>
-</div>
+<header class="head">
+  <div class="wrap">
+    <span class="name">Sayand P</span>
+    <nav aria-label="Sections">
+      <a href="#plates">Work</a>
+      <a href="#method">Method</a>
+      <a href="#colophon">About</a>
+      <a href="#contact">Contact</a>
+      <button class="tt" id="theme-toggle" type="button">Theme</button>
+    </nav>
+  </div>
+</header>
 
-<div class="wrap">
-  <header class="nav">
-    <div class="bar glass">
-      <span class="brand">Sayand P</span>
-      <nav class="nav-links" aria-label="Sections">
-        <a href="#work">Work</a>
-        <a href="#approach">Approach</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <button class="tt" id="theme-toggle" type="button" aria-label="Switch colour theme">◐</button>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <span class="pill glass"><span class="dot"></span>Open to remote roles &amp; paid internships</span>
-    <h1>Data systems that <span class="grad">survive contact</span> with reality.</h1>
+<section class="open">
+  <div class="wrap">
+    <p class="standfirst">Data Scientist &amp; ML Engineer · Kozhikode, Kerala</p>
+    <h1>Four systems, drawn to scale and <i>measured honestly</i>.</h1>
     <p class="lede">
-      I'm a data scientist in Kerala building ML and LLM systems that actually run —
-      a Malayalam price bot farmers use every morning, a nine-agent platform that repairs
-      broken data, flood risk scored property by property. Every number on this page is
-      measured, including the ones that went against me.
+      I build machine learning and LLM systems that run in production — a Malayalam price bot
+      farmers open every morning, a nine-agent platform that repairs broken data, flood risk
+      scored property by property. Each plate below shows how one of them actually works,
+      alongside the numbers it produced. Including the ones that went against me.
     </p>
-    <div class="cta">
-      <a class="btn btn-main" href="#work">Explore the work</a>
-      <a class="btn" href="https://t.me/keralacropprices_bot">Try the live bot</a>
+    <div class="sig">
+      <a href="#plates">Read the plates ↓</a>
+      <a href="https://t.me/keralacropprices_bot">Try the live bot</a>
+      <a href="https://github.com/sayandp">GitHub</a>
     </div>
-    <div class="cv-links">
-      <a href="cv-data-scientist.pdf">↓ Data Scientist CV</a>
-      <a href="cv-ml-engineer.pdf">↓ ML Engineer CV</a>
-      <a href="cv-analyst.pdf">↓ Analyst CV</a>
-    </div>
+  </div>
+</section>
 
-    <div class="stats">
-      <div class="stat glass sheen">
-        <div class="n">1,075</div>
-        <div class="l">Backend tests on the agentic platform</div>
-      </div>
-      <div class="stat glass sheen">
-        <div class="n">750K</div>
-        <div class="l">Price records behind the crop forecaster</div>
-      </div>
-      <div class="stat glass sheen">
-        <div class="n">1.07M</div>
-        <div class="l">Rows carried end to end through the pipeline</div>
-      </div>
-      <div class="stat glass sheen">
-        <div class="n">₹0</div>
-        <div class="l">Monthly infra cost — all on free tiers</div>
+<div class="plates" id="plates">
+
+  <!-- ============ PLATE 01 ============ -->
+  <section class="plate">
+    <div class="wrap plate-grid">
+      <div class="plate-no">Plate<span class="big">01</span></div>
+      <div class="plate-body">
+        <h2>Kerala Crop Price Forecaster</h2>
+        <p class="dek">Live service · Telegram bot · Malayalam</p>
+        <p>
+          Same day, same banana, seven Kerala markets: ₹51/kg in one, ₹70/kg in another. The
+          prices are published daily on Agmarknet — in English, hard to search, with no outlook
+          and no alerts — so most farmers go by what the middleman tells them. This bot does the
+          checking for them: today's price in every market for 17 crops, the range to expect over
+          the coming week, and a message when a crop crosses the price you named.
+        </p>
+
+        <figure>
+          <svg viewBox="0 0 720 300" role="img" aria-label="Forecast error against horizon. The LightGBM model carries more error than the naive rule from day 1 to day 14; the two cross at day 14 and the model is only better after that.">
+            <!-- frame -->
+            <line x1="68" y1="250" x2="700" y2="250" stroke="currentColor" stroke-width="1"/>
+            <line x1="68" y1="34" x2="68" y2="250" stroke="currentColor" stroke-width="1"/>
+
+            <!-- gridlines + y ticks: mean absolute percentage error -->
+            <g stroke="currentColor" opacity=".14">
+              <line x1="68" y1="180" x2="700" y2="180"/>
+              <line x1="68" y1="110" x2="700" y2="110"/>
+              <line x1="68" y1="40" x2="700" y2="40"/>
+            </g>
+            <g font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity=".7">
+              <text x="60" y="254" text-anchor="end">0</text>
+              <text x="60" y="184" text-anchor="end">4</text>
+              <text x="60" y="114" text-anchor="end">8</text>
+              <text x="60" y="44" text-anchor="end">12</text>
+              <text x="68" y="20" text-anchor="start">forecast error, % — lower is better</text>
+            </g>
+
+            <!-- x ticks -->
+            <g font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity=".7">
+              <text x="68" y="270" text-anchor="middle">day 1</text>
+              <text x="250" y="270" text-anchor="middle">7</text>
+              <text x="470" y="270" text-anchor="middle">14</text>
+              <text x="700" y="270" text-anchor="end">21</text>
+            </g>
+
+            <!-- region where the model finally wins: bounded by the two lines -->
+            <path d="M470 145 L700 101 L700 131 Z" fill="#1b3fa0" opacity=".16"/>
+
+            <!-- naive rule: error grows steadily with horizon -->
+            <path d="M68 215 L250 180 L470 145 L700 101" fill="none" stroke="currentColor"
+                  stroke-width="2.2" stroke-linejoin="round"/>
+
+            <!-- model: worse early, flatter, crosses at day 14 -->
+            <path class="drawn" d="M68 171 L250 159 L470 145 L700 131" fill="none" stroke="#b3800f"
+                  stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+
+            <!-- crossover -->
+            <line x1="470" y1="34" x2="470" y2="250" stroke="#1b3fa0" stroke-width="1" stroke-dasharray="4 4"/>
+            <circle cx="470" cy="145" r="5" fill="#1b3fa0"/>
+            <g font-family="Archivo, sans-serif" fill="#1b3fa0">
+              <text x="482" y="58" font-size="12.5" font-weight="600">crossover · day 14</text>
+              <text x="482" y="74" font-size="11">the model only earns its place here</text>
+            </g>
+
+            <!-- series labels, clear of their lines -->
+            <g font-family="Archivo, sans-serif" font-size="11.5">
+              <text x="92" y="226" fill="currentColor">naive: tomorrow = today</text>
+              <text x="300" y="142" fill="#b3800f">LightGBM, 750,000 prices</text>
+            </g>
+
+            <text x="640" y="152" font-family="Archivo, sans-serif" font-size="11" fill="#1b3fa0" text-anchor="middle">model ahead</text>
+          </svg>
+          <figcaption>
+            <b>Figure 1.</b> Error against forecast horizon. For the first two weeks — the window a
+            farmer actually sells in — LightGBM carries more error than simply assuming tomorrow's
+            price equals today's. The lines cross at day 14. The shipped app therefore serves the
+            naive forecast with a calibrated range, and hands over to the model only past the
+            crossover, for the crops where it has demonstrated an edge.
+          </figcaption>
+        </figure>
+
+        <div class="found">
+          <b>What the data said</b>
+          <span>A model that loses to the obvious guess is still a result. Reporting it, and
+          shipping the baseline instead, is the difference between a forecast a farmer can trust
+          and one that just looks sophisticated.</span>
+        </div>
+
+        <div class="facts">
+          <div class="fact"><div class="v">17</div><div class="k">crops</div></div>
+          <div class="fact"><div class="v">750,000</div><div class="k">price records</div></div>
+          <div class="fact"><div class="v">~80%</div><div class="k">interval hit rate</div></div>
+          <div class="fact"><div class="v">₹0</div><div class="k">per month</div></div>
+        </div>
+        <p class="tools"><b>Built with</b> Python · LightGBM · MLflow · GitHub Actions · Postgres · FastAPI · Next.js · Telegram Bot API</p>
+        <div class="out">
+          <a href="https://t.me/keralacropprices_bot">Try the bot</a>
+          <a href="https://t.me/keralavipanivila">Daily price channel</a>
+          <a href="https://github.com/sayandp/kerala-crop-forecaster">Source</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="work">
-    <div class="sec-head">
-      <h2 class="sec-title">Selected work</h2>
-      <p class="sec-sub">Four systems, built end to end. Each one shipped with its numbers and its failures.</p>
-    </div>
-
-    <div class="cards">
-
-      <article class="card glass sheen">
-        <div class="card-top">
-          <h3>Kerala Crop Price Forecaster</h3>
-          <span class="tagline">Live · Telegram bot</span>
-        </div>
+  <!-- ============ PLATE 02 ============ -->
+  <section class="plate">
+    <div class="wrap plate-grid">
+      <div class="plate-no">Plate<span class="big">02</span></div>
+      <div class="plate-body">
+        <h2>Agentic Data Intelligence Platform</h2>
+        <p class="dek">PG Diploma capstone · nine agents</p>
         <p>
-          Same day, same banana, seven Kerala markets: ₹51/kg in one, ₹70/kg in another. The
-          prices are published daily on Agmarknet — in English, hard to search, no outlook, no
-          alerts — so most farmers go by what the middleman tells them. This bot does the
-          checking for them in Malayalam: today's price in every market for 17 crops, the range
-          to expect over the next week, and a message when a crop crosses the price you named.
-          It refreshes itself every morning.
-        </p>
-        <div class="note">
-          <b>What the data said</b>
-          <span>LightGBM trained on 750,000 prices couldn't beat "tomorrow's price equals today's"
-          at 1–7 days. So I shipped that naive guess with an honest range instead, and the model
-          only takes over at the horizons where it has proven it wins.</span>
-        </div>
-        <div class="chips">
-          <div class="chip"><div class="v">17</div><div class="k">crops covered</div></div>
-          <div class="chip"><div class="v">750,000</div><div class="k">price records</div></div>
-          <div class="chip"><div class="v">~80%</div><div class="k">baseline hit rate</div></div>
-          <div class="chip"><div class="v">₹0</div><div class="k">per month</div></div>
-        </div>
-        <ul class="stack">
-          <li>Python</li><li>LightGBM</li><li>MLflow</li><li>GitHub Actions</li><li>Postgres</li><li>FastAPI</li><li>Next.js</li>
-        </ul>
-        <div class="go">
-          <a class="key" href="https://t.me/keralacropprices_bot">Try the bot →</a>
-          <a href="https://t.me/keralavipanivila">Daily prices</a>
-          <a href="https://github.com/sayandp/kerala-crop-forecaster">Code</a>
-        </div>
-      </article>
-
-      <article class="card glass sheen">
-        <div class="card-top">
-          <h3>Agentic Data Intelligence Platform</h3>
-          <span class="tagline">Nine agents, one gate</span>
-        </div>
-        <p>
-          Nine agents carry raw business data from upload to decision — ingesting CSV, Excel, SQL
+          Nine agents carry raw business data from upload to decision: ingesting CSV, Excel, SQL
           and REST behind one data contract, learning what normal looks like, then catching schema
-          drift, null floods and distribution shifts in every new file. Safe, reversible problems
-          get repaired automatically, each repair re-validated and reverted byte-for-byte if it
-          didn't work. Anything consequential stops and asks a human, evidence attached.
+          drift, null floods and distribution shifts in every new file. The architecture's whole
+          point is that the model never holds authority — it proposes, and a deterministic gate
+          derived from the firing rule decides what may actually run.
         </p>
-        <p>
-          The architecture separates reasoning from authority: detection is deterministic,
-          diagnosis is one narrowly scoped model call under a closed schema, and action is
-          deterministic again behind a rule-derived gate — so a wrong or even malicious model
-          response has no path to your data.
-        </p>
-        <div class="note">
+
+        <figure>
+          <svg viewBox="0 0 720 250" role="img" aria-label="Flow diagram: deterministic detection passes a failed rule to an LLM diagnosis under a closed schema, which proposes an action; a rule-derived gate decides, the executor applies it, and post-condition verification either keeps the fix or reverts it byte-for-byte. Consequential cases escalate to a human.">
+            <defs>
+              <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+              </marker>
+              <marker id="ar2b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" fill="#1b3fa0"/>
+              </marker>
+            </defs>
+
+            <g font-family="Archivo, sans-serif" font-size="12.5" fill="currentColor">
+              <!-- detect -->
+              <rect x="14" y="72" width="128" height="56" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <text x="78" y="96" text-anchor="middle" font-weight="600">Detect</text>
+              <text x="78" y="113" text-anchor="middle" font-size="11" opacity=".7">deterministic rules</text>
+
+              <!-- diagnose -->
+              <rect x="206" y="72" width="128" height="56" fill="none" stroke="#b3800f" stroke-width="1.5" stroke-dasharray="5 3"/>
+              <text x="270" y="96" text-anchor="middle" font-weight="600" fill="#b3800f">Diagnose</text>
+              <text x="270" y="113" text-anchor="middle" font-size="11" fill="#b3800f" opacity=".85">LLM · closed schema</text>
+
+              <!-- gate -->
+              <rect x="398" y="72" width="128" height="56" fill="none" stroke="#1b3fa0" stroke-width="2.5"/>
+              <text x="462" y="96" text-anchor="middle" font-weight="600" fill="#1b3fa0">Gate</text>
+              <text x="462" y="113" text-anchor="middle" font-size="11" fill="#1b3fa0" opacity=".85">rule-derived</text>
+
+              <!-- verify -->
+              <rect x="590" y="72" width="116" height="56" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <text x="648" y="96" text-anchor="middle" font-weight="600">Apply</text>
+              <text x="648" y="113" text-anchor="middle" font-size="11" opacity=".7">then verify</text>
+
+              <!-- human -->
+              <rect x="398" y="190" width="128" height="46" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <text x="462" y="218" text-anchor="middle" font-size="12">Human review</text>
+
+              <!-- arrows -->
+              <line x1="142" y1="100" x2="200" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar2)"/>
+              <text x="171" y="90" text-anchor="middle" font-size="10.5" opacity=".75">failed rule</text>
+
+              <line x1="334" y1="100" x2="392" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar2)"/>
+              <text x="363" y="90" text-anchor="middle" font-size="10.5" opacity=".75">proposes</text>
+
+              <line x1="526" y1="100" x2="584" y2="100" stroke="#1b3fa0" stroke-width="2" marker-end="url(#ar2b)"/>
+              <text x="555" y="90" text-anchor="middle" font-size="10.5" fill="#1b3fa0">permits</text>
+
+              <!-- escalation -->
+              <path d="M462 128 L462 186" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#ar2)"/>
+              <text x="472" y="162" font-size="10.5" opacity=".75">if consequential</text>
+
+              <!-- revert loop, routed above the flow so nothing crosses -->
+              <path d="M648 70 L648 38 L270 38 L270 68" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar2)"/>
+              <text x="459" y="30" text-anchor="middle" font-size="10.5" opacity=".75">reverts byte-for-byte if the fix didn't hold</text>
+
+              <!-- authority annotation, below its box -->
+              <text x="270" y="146" text-anchor="middle" font-size="10.5" fill="#b3800f">the only step with a model in it</text>
+            </g>
+          </svg>
+          <figcaption>
+            <b>Figure 2.</b> Reasoning and authority are separated. The model's single job is to
+            explain why a deterministic rule fired, under a closed enum schema; the gate that
+            decides what runs is derived from the firing rule itself, never from the model's
+            self-report. A wrong — or hostile — model response has no path to the data.
+          </figcaption>
+        </figure>
+
+        <div class="found">
           <b>What the data said</b>
           <span>I logged the model's self-reported confidence across live runs. 82% came back at
-          exactly 0.95, inside a band 0.08 wide. The confidence threshold was doing no routing
-          work at all — the deterministic layers had been carrying it the whole time.</span>
+          exactly 0.95, inside a band 0.08 wide. The confidence threshold was doing no routing work
+          at all; the deterministic layers had been carrying the system the whole time.</span>
         </div>
-        <div class="chips">
-          <div class="chip"><div class="v">1,075</div><div class="k">backend tests</div></div>
-          <div class="chip"><div class="v">72</div><div class="k">browser tests</div></div>
-          <div class="chip"><div class="v">1.07M</div><div class="k">rows processed</div></div>
-          <div class="chip"><div class="v">0</div><div class="k">wrong auto-repairs</div></div>
-        </div>
-        <ul class="stack">
-          <li>LangGraph</li><li>FastAPI</li><li>React</li><li>Postgres</li><li>Playwright</li><li>Gemini</li>
-        </ul>
-        <div class="go">
-          <a class="key" href="https://github.com/sayandp/agentic-data-intelligence-platform">Code &amp; evidence →</a>
-        </div>
-      </article>
 
-      <article class="card glass sheen">
-        <div class="card-top">
-          <h3>Kerala Flood Risk Intelligence</h3>
-          <span class="tagline">Satellite + terrain</span>
+        <div class="facts">
+          <div class="fact"><div class="v">1,075</div><div class="k">backend tests</div></div>
+          <div class="fact"><div class="v">72</div><div class="k">browser tests</div></div>
+          <div class="fact"><div class="v">1.07M</div><div class="k">rows end to end</div></div>
+          <div class="fact"><div class="v">0</div><div class="k">wrong auto-repairs</div></div>
         </div>
+        <p class="tools"><b>Built with</b> Python · LangGraph · FastAPI · React · Postgres · Playwright · Gemini</p>
+        <div class="out">
+          <a href="https://github.com/sayandp/agentic-data-intelligence-platform">Source &amp; evidence record</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PLATE 03 ============ -->
+  <section class="plate">
+    <div class="wrap plate-grid">
+      <div class="plate-no">Plate<span class="big">03</span></div>
+      <div class="plate-body">
+        <h2>Kerala Flood Risk Intelligence</h2>
+        <p class="dek">Property-level risk from terrain</p>
         <p>
           Answers one question: if I buy this property in Kerala, will it flood? Not by predicting
           rain, but by reading terrain — elevation, slope, distance to water, catchment area and
           historical paddy land, drawn from Copernicus DEM, Sentinel-1, Dynamic World and 159,168
-          OpenStreetMap waterway features. A Random Forest scores it, 12 physics-based rules
-          constrain it where pure ML fails on geographic edge cases, and SHAP explains every
-          single prediction.
+          OpenStreetMap waterway features. A Random Forest scores it, twelve physics-based rules
+          constrain it where pure ML fails on geographic edge cases, and SHAP explains each result.
         </p>
-        <div class="chips">
-          <div class="chip"><div class="v">0.975</div><div class="k">ROC-AUC</div></div>
-          <div class="chip"><div class="v">91.96%</div><div class="k">accuracy</div></div>
-          <div class="chip"><div class="v">159,168</div><div class="k">waterway features</div></div>
-          <div class="chip"><div class="v">12</div><div class="k">physics rules</div></div>
-        </div>
-        <ul class="stack">
-          <li>scikit-learn</li><li>SHAP</li><li>rasterio</li><li>FastAPI</li><li>React</li><li>Leaflet</li>
-        </ul>
-        <div class="go">
-          <a class="key" href="https://github.com/sayandp/kerala-flood-risk-intelligence-system">Code →</a>
-        </div>
-      </article>
 
-      <article class="card glass sheen">
-        <div class="card-top">
-          <h3>Sahayi</h3>
-          <span class="tagline">Malayalam + English RAG</span>
-        </div>
-        <p>
-          Ask in Malayalam or English which government schemes you qualify for. Every answer cites
-          the source page it came from — and when the retrieved passages don't support an answer,
-          it says so instead of producing a confident one. Evaluated on retrieval quality and
-          citation accuracy, not on whether the output reads well.
-        </p>
-        <div class="chips">
-          <div class="chip"><div class="v">ml · en</div><div class="k">bilingual</div></div>
-          <div class="chip"><div class="v">100%</div><div class="k">answers cited</div></div>
-          <div class="chip"><div class="v">Abstains</div><div class="k">when unsupported</div></div>
-        </div>
-        <ul class="stack">
-          <li>RAG</li><li>Hybrid search</li><li>Reranking</li><li>FastAPI</li><li>React</li>
-        </ul>
-        <div class="go">
-          <a class="key" href="https://github.com/sayandp/sahayi">Code →</a>
-        </div>
-      </article>
+        <figure>
+          <svg viewBox="0 0 720 300" role="img" aria-label="Terrain cross-section with elevation contours, a river channel and former paddy land in the floodplain; four properties are marked, with risk rising as elevation falls and distance to the channel shrinks.">
+            <defs>
+              <linearGradient id="valley" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#1b3fa0" stop-opacity=".22"/>
+                <stop offset="1" stop-color="#1b3fa0" stop-opacity=".04"/>
+              </linearGradient>
+            </defs>
 
-    </div>
-  </section>
+            <!-- contour lines: a valley profile -->
+            <g fill="none" stroke="currentColor" opacity=".3" stroke-width="1">
+              <path d="M20 60 C140 56 200 96 300 130 C400 164 470 168 560 140 C630 118 670 92 700 78"/>
+              <path d="M20 96 C140 94 206 128 300 158 C400 190 472 192 560 168 C632 148 672 124 700 112"/>
+              <path d="M20 132 C140 132 212 160 300 186 C400 214 474 216 560 196 C634 178 674 156 700 146"/>
+            </g>
+            <!-- floodplain fill -->
+            <path d="M20 168 C140 168 218 192 300 214 C400 240 476 240 560 224 C636 208 676 188 700 180 L700 262 L20 262 Z"
+                  fill="url(#valley)"/>
+            <path d="M20 168 C140 168 218 192 300 214 C400 240 476 240 560 224 C636 208 676 188 700 180"
+                  stroke="#1b3fa0" stroke-width="1.6" fill="none"/>
 
-  <section class="sec" id="approach">
-    <div class="sec-head">
-      <h2 class="sec-title">How I work</h2>
-      <p class="sec-sub">Three habits that show up in every project above.</p>
-    </div>
-    <div class="trio">
-      <div class="glass sheen">
-        <span class="num">01</span>
-        <h3>Measure before optimising</h3>
-        <p>A chain taking 28 seconds turned out to be spending 2.3 of them per call on a DNS fallback, not on the model. Profiling the transport beat tuning the thing everyone assumes is slow.</p>
-      </div>
-      <div class="glass sheen">
-        <span class="num">02</span>
-        <h3>Falsify your own guarantees</h3>
-        <p>Every safety claim in the platform has a script that removes the protection and proves the test catches it. A guarantee nobody has tried to break is just a guess.</p>
-      </div>
-      <div class="glass sheen">
-        <span class="num">03</span>
-        <h3>Report what failed</h3>
-        <p>The model that lost to a naive baseline. The confidence score that meant nothing. The passing test that asserted nothing. They're in the write-ups too, because they tell you whether the rest is true.</p>
-      </div>
-    </div>
-  </section>
+            <!-- river channel -->
+            <path d="M300 214 C340 230 400 238 430 236" stroke="#1b3fa0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".85"/>
+            <text x="366" y="258" font-family="Archivo, sans-serif" font-size="11" fill="#1b3fa0" text-anchor="middle">river channel</text>
 
-  <section class="sec" id="more">
-    <div class="sec-head">
-      <h2 class="sec-title">Also built</h2>
-    </div>
-    <div class="mini">
-      <div class="glass sheen">
-        <span class="t">India GDP Nowcaster</span>
-        <span class="d">Quarterly GDP from monthly indicators, backtested on first-print vintages against a naive rule.</span>
-        <a href="https://github.com/sayandp/india-gdp-nowcaster">Code</a>
-      </div>
-      <div class="glass sheen">
-        <span class="t">E-commerce SQL Analytics</span>
-        <span class="d">RFM segmentation, cohort retention and revenue trends in SQL, with a Plotly dashboard.</span>
-        <a href="https://github.com/sayandp/ecommerce-dashboard">Code</a>
-      </div>
-      <div class="glass sheen">
-        <span class="t">Loan Default Risk Engine</span>
-        <span class="d">Default prediction with XGBoost and SHAP explanations, served through Streamlit.</span>
-        <a href="https://github.com/sayandp/loan-default-risk-engine">Code</a>
-      </div>
-      <div class="glass sheen">
-        <span class="t">Telco Churn Predictor</span>
-        <span class="d">XGBoost with weighted loss for class imbalance, threshold tuned to 0.30 for recall.</span>
-        <a href="https://telco-churn-app-cyqpjag2mufddo5pt2cbqh.streamlit.app/">Live</a>
-        <a href="https://github.com/sayandp/telco-churn-streamlit">Code</a>
-      </div>
-      <div class="glass sheen">
-        <span class="t">Premier League Predictor</span>
-        <span class="d">A decade of fixtures through XGBoost, Monte Carlo simulation and a Poisson goals model.</span>
-        <a href="https://premier-league-match-predictor-hkziappotkd3ghtkefvsgcr.streamlit.app/">Live</a>
-        <a href="https://github.com/sayandp/premier-league-match-predictor">Code</a>
-      </div>
-      <div class="glass sheen">
-        <span class="t">Smart Inventory Forecasting</span>
-        <span class="d">Demand forecasting on UK retail data with lag features, holidays and reorder buffers.</span>
-        <a href="https://github.com/sayandp/inventory-recommendation-system">Code</a>
+            <!-- former paddy hatch -->
+            <g stroke="#b3800f" stroke-width="1" opacity=".55">
+              <line x1="190" y1="206" x2="210" y2="186"/><line x1="206" y1="212" x2="226" y2="192"/>
+              <line x1="222" y1="218" x2="242" y2="198"/><line x1="238" y1="224" x2="258" y2="204"/>
+              <line x1="254" y1="230" x2="274" y2="210"/>
+            </g>
+            <text x="196" y="246" font-family="Archivo, sans-serif" font-size="11" fill="#b3800f">former paddy</text>
+
+            <!-- property markers -->
+            <g font-family="Archivo, sans-serif" font-size="11">
+              <circle cx="96" cy="86" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="96" y="70" text-anchor="middle" fill="currentColor">15% · very low</text>
+
+              <circle cx="300" cy="214" r="6" fill="#1b3fa0"/>
+              <text x="300" y="200" text-anchor="middle" fill="#1b3fa0" font-weight="600">87% · critical</text>
+
+              <circle cx="520" cy="212" r="6" fill="#1b3fa0" opacity=".6"/>
+              <text x="520" y="198" text-anchor="middle" fill="#1b3fa0" opacity=".85">60% · high</text>
+
+              <circle cx="664" cy="124" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="664" y="108" text-anchor="middle" fill="currentColor">15% · very low</text>
+            </g>
+
+            <!-- axis note -->
+            <text x="20" y="286" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity=".6">elevation ↓ · distance to channel ↓ · risk ↑</text>
+          </svg>
+          <figcaption>
+            <b>Figure 3.</b> Risk is written into the terrain. Properties on the valley floor, close
+            to the channel and sitting on former paddy land, score critical; the same model places
+            hillside parcels a few kilometres away at very low. Validation ran on ten known
+            locations and classified all ten correctly, with three of those corrections coming from
+            the physics rule layer rather than the model.
+          </figcaption>
+        </figure>
+
+        <div class="facts">
+          <div class="fact"><div class="v">0.975</div><div class="k">ROC-AUC</div></div>
+          <div class="fact"><div class="v">91.96%</div><div class="k">accuracy</div></div>
+          <div class="fact"><div class="v">159,168</div><div class="k">waterway features</div></div>
+          <div class="fact"><div class="v">12</div><div class="k">physics rules</div></div>
+        </div>
+        <p class="tools"><b>Built with</b> Python · scikit-learn · SHAP · rasterio · FastAPI · React · Leaflet</p>
+        <div class="out">
+          <a href="https://github.com/sayandp/kerala-flood-risk-intelligence-system">Source</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="about">
-    <div class="sec-head">
-      <h2 class="sec-title">About</h2>
-    </div>
-    <div class="about-grid">
-      <div class="glass sheen">
+  <!-- ============ PLATE 04 ============ -->
+  <section class="plate">
+    <div class="wrap plate-grid">
+      <div class="plate-no">Plate<span class="big">04</span></div>
+      <div class="plate-body">
+        <h2>Sahayi</h2>
+        <p class="dek">Bilingual retrieval · Malayalam &amp; English</p>
         <p>
-          I'm a statistics graduate in Kozhikode, Kerala, finishing a PG Diploma in Data Science
-          at the University of Calicut. My training is inference and sampling rather than
-          software, which is probably why I care more about whether a result holds up than about
-          how impressive it sounds.
+          Ask in Malayalam or English which government schemes you qualify for. The answer arrives
+          with the source page it came from — and when the retrieved passages don't support an
+          answer, the system says so instead of producing a confident one. Most retrieval demos are
+          graded on whether the prose reads well; this one is graded on whether the citation is
+          real and whether it knows when to stop.
         </p>
-        <p>
-          Most of what I build starts somewhere local and unglamorous: mandi prices nobody
-          aggregates, flood risk nobody scores property by property, government schemes nobody
-          can find in Malayalam. Public data, free tiers, and a real person who'd use it.
-        </p>
-        <p>
-          I'm looking for remote Data Scientist, ML Engineer or Data Analyst work, and paid
-          internships. If you want to interrogate any number on this page, I'd enjoy that
-          conversation.
-        </p>
-      </div>
-      <div class="glass sheen">
-        <ul class="tl">
-          <li>
-            <span class="yr">2025 — 2026</span>
-            <span class="w">PG Diploma, Data Science &amp; Analytics</span>
-            <span class="s">University of Calicut</span>
-          </li>
-          <li>
-            <span class="yr">2021 — 2024</span>
-            <span class="w">B.Sc. Statistics with Data Science</span>
-            <span class="s">University of Calicut · First Class</span>
-          </li>
-          <li>
-            <span class="yr">Toolkit</span>
-            <span class="w">Python · SQL · R</span>
-            <span class="s">scikit-learn, XGBoost, LightGBM, FastAPI, Postgres, Docker, MLflow, pytest, Playwright, Power BI</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
 
-  <section class="sec" id="contact">
-    <div class="contact glass sheen">
-      <h2>Let's build something<br><span class="grad">with your data</span></h2>
-      <p>Open to remote roles and paid internships. Happy to walk through any of these systems in detail — including the parts that didn't work.</p>
-      <div class="mailline">sayandp0@gmail.com</div>
-      <div class="cta">
-        <a class="btn btn-main" href="https://www.linkedin.com/in/sayand-p-2215a9225/">LinkedIn</a>
-        <a class="btn" href="https://github.com/sayandp">GitHub</a>
+        <figure>
+          <svg viewBox="0 0 720 230" role="img" aria-label="Retrieval flow: a Malayalam or English question goes through hybrid keyword and vector search over scheme documents, a reranker scores the passages, and the generator either answers with a page citation or abstains when support is too weak.">
+            <defs>
+              <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+            <g font-family="Archivo, sans-serif" font-size="12.5" fill="currentColor">
+              <!-- question -->
+              <rect x="12" y="78" width="118" height="50" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <text x="71" y="100" text-anchor="middle" font-weight="600">Question</text>
+              <text x="71" y="116" text-anchor="middle" font-size="11" opacity=".7">ml · en</text>
+
+              <!-- corpus -->
+              <g stroke="currentColor" stroke-width="1.2" fill="none">
+                <rect x="186" y="30" width="86" height="42"/>
+                <rect x="192" y="38" width="86" height="42"/>
+                <rect x="198" y="46" width="86" height="42"/>
+              </g>
+              <text x="241" y="104" text-anchor="middle" font-size="11" opacity=".75">scheme PDFs</text>
+
+              <!-- hybrid search -->
+              <rect x="186" y="128" width="104" height="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <text x="238" y="148" text-anchor="middle" font-size="11.5">hybrid search</text>
+              <text x="238" y="164" text-anchor="middle" font-size="10.5" opacity=".7">BM25 + vectors</text>
+
+              <!-- rerank -->
+              <rect x="346" y="128" width="96" height="48" fill="none" stroke="#b3800f" stroke-width="1.5"/>
+              <text x="394" y="156" text-anchor="middle" font-size="11.5" fill="#b3800f">rerank</text>
+
+              <!-- decision -->
+              <path d="M520 152 L560 124 L600 152 L560 180 Z" fill="none" stroke="#1b3fa0" stroke-width="2"/>
+              <text x="560" y="156" text-anchor="middle" font-size="11" fill="#1b3fa0">support?</text>
+
+              <!-- outcomes -->
+              <rect x="630" y="88" width="78" height="44" fill="none" stroke="#1b3fa0" stroke-width="1.5"/>
+              <text x="669" y="108" text-anchor="middle" font-size="11.5" fill="#1b3fa0">answer</text>
+              <text x="669" y="123" text-anchor="middle" font-size="10" fill="#1b3fa0" opacity=".85">+ page cite</text>
+
+              <rect x="630" y="166" width="78" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <text x="669" y="191" text-anchor="middle" font-size="11.5">abstain</text>
+
+              <!-- arrows -->
+              <line x1="130" y1="103" x2="180" y2="88" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar3)"/>
+              <line x1="130" y1="110" x2="180" y2="146" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar3)"/>
+              <line x1="241" y1="92" x2="241" y2="122" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar3)"/>
+              <line x1="290" y1="152" x2="340" y2="152" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar3)"/>
+              <line x1="442" y1="152" x2="514" y2="152" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar3)"/>
+              <path d="M600 140 L624 116" stroke="#1b3fa0" stroke-width="1.8" marker-end="url(#ar3)"/>
+              <path d="M600 166 L624 182" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#ar3)"/>
+              <text x="614" y="132" font-size="10" fill="#1b3fa0" text-anchor="end">yes</text>
+              <text x="612" y="200" font-size="10" opacity=".7" text-anchor="end">no</text>
+            </g>
+          </svg>
+          <figcaption>
+            <b>Figure 4.</b> The branch on the right is the part that matters. Retrieval quality and
+            citation accuracy are measured separately from fluency, and an unsupported question
+            produces an abstention rather than a plausible paragraph.
+          </figcaption>
+        </figure>
+
+        <p class="tools"><b>Built with</b> Python · hybrid retrieval · reranking · FastAPI · React</p>
+        <div class="out">
+          <a href="https://github.com/sayandp/sahayi">Source</a>
+        </div>
       </div>
     </div>
-    <p class="foot">Sayand P · Kozhikode, Kerala · <a href="cv-data-scientist.pdf">CV</a></p>
   </section>
 </div>
+
+<section class="method" id="method">
+  <div class="wrap">
+    <p class="sec-label">Method</p>
+    <div class="three">
+      <div>
+        <h3>Measure before optimising</h3>
+        <p>A chain taking 28 seconds turned out to be spending 2.3 of them per call on a DNS fallback, not on the model. Profiling the transport beat tuning the part everyone assumes is slow.</p>
+      </div>
+      <div>
+        <h3>Falsify your own guarantees</h3>
+        <p>Every safety claim in the platform has a script that removes the protection and proves the test catches it. A guarantee nobody has tried to break is a guess.</p>
+      </div>
+      <div>
+        <h3>Report what failed</h3>
+        <p>The model that lost to a naive baseline. The confidence score that meant nothing. The passing test that asserted nothing. They go in the write-up too — they are what tells you the rest is true.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="appendix">
+  <div class="wrap">
+    <p class="sec-label">Appendix · further work</p>
+    <div class="rows">
+      <div class="row">
+        <span class="t">India GDP Nowcaster</span>
+        <span class="d">Quarterly GDP from monthly indicators, backtested on first-print vintages against a naive rule.</span>
+        <span class="l"><a href="https://github.com/sayandp/india-gdp-nowcaster">Source</a></span>
+      </div>
+      <div class="row">
+        <span class="t">E-commerce SQL Analytics</span>
+        <span class="d">RFM segmentation, cohort retention and revenue trends in SQL, with a Plotly dashboard.</span>
+        <span class="l"><a href="https://github.com/sayandp/ecommerce-dashboard">Source</a></span>
+      </div>
+      <div class="row">
+        <span class="t">Loan Default Risk Engine</span>
+        <span class="d">Default prediction with XGBoost and SHAP explanations, served through Streamlit.</span>
+        <span class="l"><a href="https://github.com/sayandp/loan-default-risk-engine">Source</a></span>
+      </div>
+      <div class="row">
+        <span class="t">Telco Churn Predictor</span>
+        <span class="d">XGBoost with weighted loss for class imbalance; threshold tuned to 0.30 for recall.</span>
+        <span class="l"><a href="https://telco-churn-app-cyqpjag2mufddo5pt2cbqh.streamlit.app/">Live</a><a href="https://github.com/sayandp/telco-churn-streamlit">Source</a></span>
+      </div>
+      <div class="row">
+        <span class="t">Premier League Predictor</span>
+        <span class="d">A decade of fixtures through XGBoost, Monte Carlo simulation and a Poisson goals model.</span>
+        <span class="l"><a href="https://premier-league-match-predictor-hkziappotkd3ghtkefvsgcr.streamlit.app/">Live</a><a href="https://github.com/sayandp/premier-league-match-predictor">Source</a></span>
+      </div>
+      <div class="row">
+        <span class="t">Smart Inventory Forecasting</span>
+        <span class="d">Demand forecasting on UK retail data with lag features, holidays and reorder buffers.</span>
+        <span class="l"><a href="https://github.com/sayandp/inventory-recommendation-system">Source</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="colophon" id="colophon">
+  <div class="wrap colo-grid">
+    <div>
+      <p class="sec-label">Colophon</p>
+      <p>
+        I'm a statistics graduate in Kozhikode, finishing a PG Diploma in Data Science at the
+        University of Calicut. My training is inference and sampling rather than software, which is
+        probably why I care more about whether a result holds up than about how impressive it sounds.
+      </p>
+      <p>
+        Most of what I build starts somewhere local and unglamorous: mandi prices nobody aggregates,
+        flood risk nobody scores property by property, government schemes nobody can find in
+        Malayalam. Public data, free tiers, and a real person who would use the result.
+      </p>
+      <p>
+        I'm looking for remote Data Scientist, ML Engineer or Data Analyst work, and paid
+        internships. If you'd like to interrogate any number on this page, I'd enjoy that conversation.
+      </p>
+      <div class="edu">
+        <div>
+          <span class="y">2025 — 2026</span>
+          <span class="w">PG Diploma, Data Science &amp; Analytics</span>
+          <span class="s">University of Calicut</span>
+        </div>
+        <div>
+          <span class="y">2021 — 2024</span>
+          <span class="w">B.Sc. Statistics with Data Science</span>
+          <span class="s">University of Calicut · First Class</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="cv-block">
+        <h3>Curriculum vitae</h3>
+        <ul class="cv-list">
+          <li><a href="cv-data-scientist.pdf">Data Scientist (PDF)</a></li>
+          <li><a href="cv-ml-engineer.pdf">ML Engineer (PDF)</a></li>
+          <li><a href="cv-analyst.pdf">Data Analyst (PDF)</a></li>
+        </ul>
+      </div>
+      <div class="cv-block" style="margin-top:30px">
+        <h3>Instruments</h3>
+        <p style="font-size:.9rem;color:var(--ink-2)">
+          Python, SQL and R. scikit-learn, XGBoost, LightGBM, SHAP. FastAPI, Postgres, Docker,
+          MLflow, pytest, Playwright. Plotly, Power BI, Tableau. Retrieval, evaluation harnesses
+          and agent orchestration with LangGraph.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing" id="contact">
+  <div class="wrap">
+    <h2>Interrogate any number on this page.</h2>
+    <p>Open to remote roles and paid internships, and happy to walk through any of these systems in detail — including the parts that didn't work.</p>
+    <div class="mail">sayandp0@gmail.com</div>
+    <div class="sig">
+      <a href="https://www.linkedin.com/in/sayand-p-2215a9225/">LinkedIn</a>
+      <a href="https://github.com/sayandp">GitHub</a>
+      <a href="https://t.me/keralacropprices_bot">Telegram bot</a>
+    </div>
+    <div class="foot">
+      <span>Sayand P · Kozhikode, Kerala</span>
+      <span>Set in Bodoni Moda &amp; Archivo</span>
+    </div>
+  </div>
+</section>
 
 <script>
 (function () {
@@ -866,7 +959,6 @@ a{color:inherit}
     var saved = localStorage.getItem('theme');
     if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
   } catch (e) {}
-
   btn.addEventListener('click', function () {
     var cur = root.getAttribute('data-theme');
     if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -875,16 +967,13 @@ a{color:inherit}
     try { localStorage.setItem('theme', next); } catch (e) {}
   });
 
-  // pointer-tracked specular highlight on glass panels
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('.sheen').forEach(function (el) {
-      el.addEventListener('pointermove', function (ev) {
-        var r = el.getBoundingClientRect();
-        el.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
-        el.style.setProperty('--my', (ev.clientY - r.top) + 'px');
-      });
-    });
-  }
+  // set dash length from the real path so the draw-on finishes exactly
+  document.querySelectorAll('.drawn').forEach(function (p) {
+    try {
+      var len = Math.ceil(p.getTotalLength());
+      p.style.setProperty('--len', len);
+    } catch (e) {}
+  });
 })();
 </script>
 
